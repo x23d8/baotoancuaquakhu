@@ -46,7 +46,7 @@
 ## 捐赠
 开源不易，你的支持，就是我的源源不断的动力！本项目为开源项目，捐赠均为自愿。
 ### 如何捐赠？
-[爱发电⚡](https://afdian.net/a/twimark)
+[爱发电⚡](https://ifdian.net/a/twimark)
 
 ## 🎇feature：  
 1. 高性能碰撞检测：  
