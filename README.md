@@ -1,6 +1,5 @@
 # Bảo tàng số “Dòng chảy Đổi mới” · 1996–2006
 
-![cover.jpg](./cover.jpg)
 
 ## Giới thiệu
 
