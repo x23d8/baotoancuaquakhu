@@ -41,7 +41,7 @@ export default class Css3DRenderer {
 		material.side = DoubleSide;
 		material.transparent = true;
 		material.opacity = 0;
-		// NoBlending混合模式允许GL平面遮挡CSS平面
+		// NoBlending allows the GL plane to occlude the CSS plane
 		material.blending = NoBlending;
 		const geometry = new PlaneGeometry(1.5, 1.3);
 		const mesh = new Mesh(geometry, material);
@@ -55,6 +55,7 @@ export default class Css3DRenderer {
 		iframe.style.height = "900px";
 		iframe.style.boxSizing = "border-box";
 		iframe.style.opacity = "1";
+		iframe.style.pointerEvents = "none";
 
 		const object = new CSS3DObject(iframe);
 		object.position.copy(mesh.position);

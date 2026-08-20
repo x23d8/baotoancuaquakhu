@@ -1,17 +1,18 @@
 {
-  "name": "gallery",
+  "name": "bao-tang-dong-chay-doi-moi",
   "private": true,
   "version": "1.2.0",
-  "description": "Digital exhibition project developed based on three.js.",
+  "description": "Bảo tàng lịch sử số Việt Nam giai đoạn 1996–2006 xây dựng bằng three.js.",
   "keywords": [
     "3d",
     "threejs",
-    "game",
-    "Digital exhibition",
+    "museum",
+    "vietnam-history",
+    "digital-exhibition",
     "typescript"
   ],
   "license": "GPL-3.0-only",
-  "author": "Steve245270533",
+  "author": "x23d8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -29,7 +30,7 @@
     "postcss": "^8.4.31",
     "types": "^0.1.1",
     "typescript": "^4.9.4",
-    "vite": "^4.0.0"
+    "vite": "^8.2.2"
   },
   "dependencies": {
     "mitt": "^3.0.1",

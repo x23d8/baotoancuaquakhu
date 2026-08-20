@@ -13,11 +13,11 @@ export default class RayCasterControls {
 		this.core = new Core();
 
 		this.click_raycaster = new Raycaster();
-		// 通过click点击检测距离为18
+		// Set the click-detection distance to 18
 		this.click_raycaster.far = 18;
 
 		this.tooltip_raycaster = new Raycaster();
-		// tooltip显示检测距离为15
+		// Set the tooltip-detection distance to 15
 		this.tooltip_raycaster.far = 15;
 
 		this.hover_point = new Vector2(0, 0);
@@ -41,15 +41,17 @@ export default class RayCasterControls {
 		let down_y = 0;
 
 		document.body.addEventListener("pointerdown", (event) => {
+			if (event.button !== 0) return;
 			down_x = event.screenX;
 			down_y = event.screenY;
 		});
 
 		document.body.addEventListener("pointerup", (event) => {
+			if (event.button !== 0) return;
 			const offset_x = Math.abs(event.screenX - down_x);
 			const offset_y = Math.abs(event.screenY - down_y);
 
-			// 点击偏移量限制
+			// Limit pointer movement so drags are not treated as clicks
 			if (offset_x <= 1 && offset_y <= 1 && event.target instanceof HTMLCanvasElement) {
 				this.mouse_point.x = (event.clientX / window.innerWidth) * 2 - 1;
 				this.mouse_point.y = -((event.clientY / window.innerHeight) * 2 - 1);

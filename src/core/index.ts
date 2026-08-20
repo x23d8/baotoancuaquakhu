@@ -1,4 +1,4 @@
-import {ACESFilmicToneMapping, Clock, Color, PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer} from "three";
+import {ACESFilmicToneMapping, Clock, Color, MOUSE, PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer} from "three";
 import World from "../world";
 import Emitter from "../utils/Emitter";
 import Loader from "../loader";
@@ -35,6 +35,10 @@ export default class Core extends Emitter {
 		this.camera = new PerspectiveCamera();
 		this.clock = new Clock();
 		this.orbit_controls = new OrbitControls(this.camera, this.renderer.domElement);
+		this.orbit_controls.enablePan = false;
+		this.orbit_controls.mouseButtons.LEFT = MOUSE.PAN;
+		this.orbit_controls.mouseButtons.RIGHT = MOUSE.ROTATE;
+		this.renderer.domElement.addEventListener("contextmenu", event => event.preventDefault());
 
 		this._initScene();
 		this._initCamera();
@@ -57,7 +61,7 @@ export default class Core extends Emitter {
 	}
 
 	private _initScene() {
-		this.scene.background = new Color(0x000000);
+		this.scene.background = new Color(0x170b09);
 	}
 
 	private _initCamera() {
@@ -73,7 +77,9 @@ export default class Core extends Emitter {
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.outputColorSpace = SRGBColorSpace;
 		this.renderer.toneMapping = ACESFilmicToneMapping;
+		this.renderer.toneMappingExposure = 0.88;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 		this.renderer.domElement.style.position = "absolute";
 		this.renderer.domElement.style.zIndex = "1";
 		this.renderer.domElement.style.top = "0px";

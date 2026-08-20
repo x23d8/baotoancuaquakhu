@@ -34,7 +34,7 @@ export default class ControlManage {
 	}
 
 	private _bindEvent() {
-		if ("ontouchstart" in window) { // 绑定移动端摇杆事件
+		if ("ontouchstart" in window) { // Bind mobile joystick events
 			this.mode = "mobile";
 
 			this._createJoystick();
@@ -50,7 +50,7 @@ export default class ControlManage {
 			this.joystick_manager?.on("end", () => {
 				this.move_degree = undefined
 			});
-		} else { // 绑定pc端键盘事件
+		} else { // Bind desktop keyboard events
 			document.addEventListener("keydown", this._onKeyDown.bind(this));
 			document.addEventListener("keyup", this._onKeyUp.bind(this));
 		}
@@ -81,7 +81,7 @@ export default class ControlManage {
 		}
 	}
 
-	// 判断是否为允许的键盘key
+	// Check whether the keyboard key is supported
 	isAllowKey(key: string): key is Keys {
 		return this.key_sets.includes(key as Keys);
 	}
