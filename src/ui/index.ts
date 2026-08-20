@@ -33,6 +33,8 @@ export default class UI {
 		sources_btn: HTMLElement;
 		sources_panel: HTMLElement;
 		audio_btn: HTMLElement;
+		multiplayer_presence: HTMLElement;
+		multiplayer_label: HTMLElement;
 	};
 
 	constructor() {
@@ -63,7 +65,9 @@ export default class UI {
 			operating_intro: document.querySelector(".operating-intro")!,
 			sources_btn: document.querySelector(".sources-button")!,
 			sources_panel: document.querySelector(".sources-panel")!,
-			audio_btn: document.querySelector(".audio-toggle")!
+			audio_btn: document.querySelector(".audio-toggle")!,
+			multiplayer_presence: document.querySelector(".multiplayer-presence")!,
+			multiplayer_label: document.querySelector(".presence-label")!
 		};
 
 		document.body.addEventListener("click", this.handleClick.bind(this));
@@ -243,7 +247,21 @@ export default class UI {
 	}
 
 	updateAudioButton(muted: boolean) {
-		this.doms.audio_btn.textContent = muted ? "Bật Quốc ca" : "Tắt Quốc ca";
+		this.doms.audio_btn.textContent = muted ? "Bật nhạc" : "Tắt nhạc";
 		this.doms.audio_btn.setAttribute("aria-pressed", String(muted));
+	}
+
+	updateMultiplayerStatus(state: "idle" | "connecting" | "online" | "offline", visitors = 1) {
+		this.doms.multiplayer_presence.dataset.state = state;
+		const labels = {
+			idle: "Chưa kết nối",
+			connecting: "Đang kết nối…",
+			online: `${visitors} người đang xem`,
+			offline: "Ngoại tuyến"
+		};
+		this.doms.multiplayer_label.textContent = labels[state];
+		this.doms.multiplayer_presence.title = state === "online"
+			? `${visitors} người đang cùng tham quan phòng này`
+			: labels[state];
 	}
 }

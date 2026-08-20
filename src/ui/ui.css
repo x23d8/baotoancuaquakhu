@@ -133,6 +133,24 @@ button,
 .museum-brand b { font: 700 .86rem/1.1 var(--font-vietnamese); letter-spacing: .13em; }
 .museum-brand small { margin-top: 4px; color: #cab98f; font: .69rem var(--font-vietnamese); letter-spacing: .06em; }
 .hud-actions { display: flex; gap: 8px; align-items: center; }
+.multiplayer-presence {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	height: 38px;
+	padding: 0 12px;
+	color: #f4e8c9;
+	background: rgba(48, 11, 13, .88);
+	border: 1px solid rgba(214, 173, 79, .42);
+	font: 700 .7rem var(--font-vietnamese);
+	letter-spacing: .03em;
+	backdrop-filter: blur(8px);
+}
+.presence-dot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #8c8270; box-shadow: 0 0 0 3px rgba(140, 130, 112, .16); }
+.multiplayer-presence[data-state="connecting"] .presence-dot { background: var(--museum-gold); animation: presence-pulse 1.2s ease-in-out infinite; }
+.multiplayer-presence[data-state="online"] .presence-dot { background: #79c98a; box-shadow: 0 0 0 3px rgba(121, 201, 138, .2); }
+.multiplayer-presence[data-state="offline"] .presence-dot { background: #cf7a6c; }
+@keyframes presence-pulse { 50% { opacity: .42; transform: scale(.82); } }
 .hud-actions button { height: 38px; border: 1px solid rgba(214, 173, 79, .62); padding: 0 13px; color: #f4e8c9; background: rgba(48, 11, 13, .88); cursor: pointer; font: 700 .72rem var(--font-vietnamese); letter-spacing: .06em; backdrop-filter: blur(8px); }
 .hud-actions button:hover { color: #2a120c; background: var(--museum-gold-pale); }
 .hud-actions .help { position: static; width: 38px; padding: 0; border-radius: 50%; font-size: 1rem; }
@@ -285,6 +303,8 @@ kbd { display: inline-grid; place-items: center; min-width: 28px; height: 28px; 
 	.brand-flag { width: 39px; }
 	.museum-brand b { font-size: .65rem; }
 	.hud-actions button { height: 34px; padding: 0 9px; font-size: .62rem; }
+	.multiplayer-presence { height: 34px; padding: 0 9px; }
+	.presence-label { display: none; }
 	.hud-actions .help { width: 34px; }
 	.preview-tooltip { bottom: 54px; }
 	.preview-tips { bottom: 28px; }

@@ -4,6 +4,7 @@ import Character from "../character";
 import Css3DRenderer from "../css3DRenderer";
 import Audio from "../audio";
 import RayCasterControls from "../rayCasterControls";
+import Multiplayer from "../multiplayer";
 import {ON_CLICK_RAY_CAST, ON_HIDE_TOOLTIP, ON_LOAD_MODEL_FINISH, ON_LOAD_PROGRESS, ON_ENTER_APP, ON_SHOW_TOOLTIP, ON_TOGGLE_AUDIO} from "../Constants";
 import {Object3D} from "three";
 
@@ -14,6 +15,7 @@ export default class World {
 	private css_3d_renderer: Css3DRenderer;
 	private audio: Audio;
 	private ray_caster_controls: RayCasterControls;
+	private multiplayer: Multiplayer;
 
 	constructor() {
 		this.core = new Core();
@@ -31,12 +33,14 @@ export default class World {
 		this.css_3d_renderer = new Css3DRenderer();
 		this.audio = new Audio();
 		this.ray_caster_controls = new RayCasterControls();
+		this.multiplayer = new Multiplayer(this.character);
 	}
 
 	update(delta: number) {
 		if (this.environment.collider && this.environment.is_load_finished) {
 			this.css_3d_renderer.update();
 			this.character.update(delta, this.environment.collider);
+			this.multiplayer.update(delta);
 			this.ray_caster_controls.updateTooltipRayCast(this.environment.raycast_objects);
 		}
 	}
@@ -48,6 +52,7 @@ export default class World {
 		this.audio.playAudio();
 		// Enable keyboard controls only after entering
 		this.core.control_manage.enabled();
+		this.multiplayer.connect();
 	}
 
 	private async _onLoadModelFinish() {

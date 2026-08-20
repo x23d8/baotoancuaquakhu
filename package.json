@@ -40,6 +40,7 @@
     "mitt": "^3.0.1",
     "nipplejs": "^0.10.1",
     "three": "^0.155.0",
-    "three-mesh-bvh": "^0.6.3"
+    "three-mesh-bvh": "^0.6.3",
+    "trystero": "^0.25.3"
   }
 }

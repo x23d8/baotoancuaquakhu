@@ -72,6 +72,10 @@ export default class Character {
 		this._checkReset();
 	}
 
+	get position(): Vector3 {
+		return this.character.position;
+	}
+
 	private _createCharacter() {
 		this.character = new Mesh(
 			new RoundedBoxGeometry(0.5, 2.5, 0.5, 10, 1),

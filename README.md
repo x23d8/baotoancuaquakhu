@@ -9,6 +9,7 @@ Trải nghiệm bảo tàng 3D trình bày tiến trình thay đổi trọng tâ
 - Ảnh tư liệu TTXVN được lưu cục bộ; mỗi hiện vật có caption, credit và liên kết bài nguồn.
 - Nội dung lịch sử đối chiếu `VNR202-2019.pdf`, trọng tâm PDF tr. 141–156, 166–167 và 196; mã kiểm chứng SV-01 đến SV-17.
 - Màn hình máy tính dùng `tank.png`; âm thanh là bản ghi chính thức Quốc ca Việt Nam, “Tiến quân ca”.
+- Chế độ tham quan trực tuyến đồng bộ vị trí và hướng di chuyển giữa các khách trong cùng phòng; khách khác hiện thành nhân vật đất sét trắng được dựng bằng hình học Three.js.
 - Không sử dụng ảnh tạo bởi AI.
 
 Website dùng `three.js`; mô hình không gian và va chạm được tải từ các tệp `glb`.
@@ -25,6 +26,15 @@ Góc nhìn: giữ và kéo chuột phải
 
 Tương tác hiện vật: chuột trái
 
+## Tham quan cùng nhau
+
+Sau khi bấm “Bước vào bảo tàng”, trình duyệt tự kết nối vào phòng trực tuyến. Người mở cùng một địa chỉ sẽ thấy vị trí và chuyển động của nhau; chấm xanh ở góc phải cho biết tổng số khách hiện diện.
+
+- Phòng chung mặc định: URL của website như bình thường.
+- Phòng riêng: thêm `?phong=ten-phong` vào URL và gửi đúng liên kết đó cho người tham gia, ví dụ `https://baotoancuaquakhu.vercel.app/?phong=lop-vnr202`.
+- Kết nối dùng WebRTC ngang hàng. Ứng dụng không yêu cầu tài khoản; mỗi tab chỉ gửi vị trí, hướng di chuyển và một tên tạm như `Khách 328` cho các máy trong phòng.
+- Phù hợp nhất với nhóm tham quan nhỏ. Nếu cần phục vụ phòng đông hoặc lưu tài khoản/trạng thái lâu dài, dự án nên chuyển sang máy chủ realtime chuyên dụng.
+
 ## Project Structure
 ```text
 ├── src                        # Source code
@@ -37,6 +47,7 @@ Tương tác hiện vật: chuột trái
 |   │── environment            # Scene class (map, gallery textures, and floor reflections)
 |   │── lib                    # three.js extensions
 |   │── loader                 # Loader management for GLB, textures, audio, and more
+|   │── multiplayer            # Realtime room, position sync, and procedural visitor avatars
 |   │── rayCasterControls      # Raycasting interactions between the character and artwork frames
 |   │── ui                     # UI controls for loading, details, and the virtual joystick
 |   │── utils                  # Utility functions
