@@ -282,12 +282,14 @@ export default class UI {
 		this.doms.audio_btn.setAttribute("aria-pressed", String(muted));
 	}
 
-	updateMultiplayerStatus(state: "idle" | "connecting" | "online" | "offline", visitors = 1) {
+	updateMultiplayerStatus(state: "idle" | "connecting" | "online" | "fallback" | "reconnecting" | "offline", visitors = 1) {
 		this.doms.multiplayer_presence.dataset.state = state;
 		const labels = {
 			idle: "Chưa kết nối",
 			connecting: "Đang kết nối…",
 			online: `${visitors} người đang xem`,
+			fallback: `Dự phòng · ${visitors} người`,
+			reconnecting: "Đang kết nối lại…",
 			offline: "Ngoại tuyến"
 		};
 		this.doms.multiplayer_label.textContent = labels[state];

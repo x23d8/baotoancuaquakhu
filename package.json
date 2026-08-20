@@ -37,6 +37,7 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.3",
     "mitt": "^3.0.1",
     "nipplejs": "^0.10.1",
     "three": "^0.155.0",

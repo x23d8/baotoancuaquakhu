@@ -12,6 +12,7 @@ import {
 	Vector3
 } from "three";
 import {joinRoom, type MessageAction, type Room} from "trystero";
+import {createClient, type RealtimeChannel, type SupabaseClient} from "@supabase/supabase-js";
 import Core from "../core";
 import Character from "../character";
 import {ON_SEND_CHAT} from "../Constants";
@@ -43,6 +44,11 @@ export default class Multiplayer {
 	private room: Room | null = null;
 	private poseAction: MessageAction<PosePayload> | null = null;
 	private chatAction: MessageAction<ChatPayload> | null = null;
+	private realtimeClient: SupabaseClient | null = null;
+	private realtimeChannel: RealtimeChannel | null = null;
+	private realtimeSubscribed = false;
+	private useCentralRealtime = false;
+	private clientId = crypto.randomUUID();
 	private visitors = new Map<string, RemoteVisitor>();
 	private connected = false;
 	private lastPosition = new Vector3();
@@ -52,6 +58,8 @@ export default class Multiplayer {
 	private visitorName = this.getVisitorName();
 	private lastChatAt = 0;
 	private peerChatTimes = new Map<string, number>();
+	private activeRoomId = DEFAULT_ROOM;
+	private centralFallbackTimer: number | null = null;
 
 	constructor(character: Character) {
 		this.core = new Core();
@@ -65,13 +73,33 @@ export default class Multiplayer {
 		this.connected = true;
 		this.core.ui.updateMultiplayerStatus("connecting");
 
+		const requestedRoom = new URLSearchParams(window.location.search).get("phong");
+		const roomId = requestedRoom?.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || DEFAULT_ROOM;
+		this.activeRoomId = roomId;
+		const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
+		const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
+
+		if (supabaseUrl && supabaseKey) {
+			try {
+				this.connectCentralRealtime(roomId, supabaseUrl, supabaseKey);
+			} catch (error) {
+				console.warn("Cấu hình Supabase Realtime không hợp lệ; chuyển sang WebRTC dự phòng", error);
+				this.useCentralRealtime = false;
+				this.connectPeerFallback(roomId);
+			}
+			return;
+		}
+
+		console.warn("Chưa cấu hình Supabase Realtime; đang dùng kết nối WebRTC dự phòng.");
+		this.connectPeerFallback(roomId);
+	}
+
+	private connectPeerFallback(roomId: string) {
 		try {
-			const requestedRoom = new URLSearchParams(window.location.search).get("phong");
-			const roomId = requestedRoom?.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || DEFAULT_ROOM;
 			this.room = joinRoom(
 				{appId: APP_ID},
 				roomId,
-				{onJoinError: () => this.handleConnectionError()}
+				{onJoinError: details => console.warn("Một relay WebRTC không khả dụng", details.error)}
 			);
 			this.poseAction = this.room.makeAction<PosePayload>("visitor-pose");
 			this.poseAction.onMessage = (payload, {peerId}) => this.receivePose(peerId, payload);
@@ -85,16 +113,86 @@ export default class Multiplayer {
 				this.removeVisitor(peerId);
 				this.updateVisitorCount();
 			};
-			this.core.ui.updateMultiplayerStatus("online", 1);
+			this.core.ui.updateMultiplayerStatus("fallback", 1);
 			window.addEventListener("pagehide", () => void this.room?.leave(), {once: true});
 		} catch (error) {
-			console.warn("Không thể mở phòng tham quan trực tuyến", error);
-			this.handleConnectionError();
+			console.warn("Không thể mở phòng WebRTC dự phòng", error);
+			this.core.ui.updateMultiplayerStatus("offline");
 		}
 	}
 
+	private connectCentralRealtime(roomId: string, supabaseUrl: string, supabaseKey: string) {
+		this.useCentralRealtime = true;
+		this.realtimeClient = createClient(supabaseUrl, supabaseKey, {
+			auth: {persistSession: false, autoRefreshToken: false, detectSessionInUrl: false},
+			realtime: {params: {eventsPerSecond: 20}}
+		});
+		this.realtimeChannel = this.realtimeClient.channel(`museum:${roomId}`, {
+			config: {
+				broadcast: {self: false, ack: false},
+				presence: {key: this.clientId},
+				private: false
+			}
+		});
+		this.realtimeChannel
+			.on("broadcast", {event: "pose"}, ({payload}) => {
+				if (payload?.id && payload.id !== this.clientId) this.receivePose(String(payload.id), payload as PosePayload);
+			})
+			.on("broadcast", {event: "chat"}, ({payload}) => {
+				if (payload?.id && payload.id !== this.clientId) this.receiveChat(String(payload.id), payload as ChatPayload);
+			})
+			.on("presence", {event: "sync"}, () => this.syncCentralPresence())
+			.subscribe(async status => {
+				if (status === "SUBSCRIBED") {
+					this.clearCentralFallback();
+					this.realtimeSubscribed = true;
+					await this.realtimeChannel?.track({id: this.clientId, name: this.visitorName, onlineAt: Date.now()});
+					this.sendPose();
+					this.syncCentralPresence();
+					return;
+				}
+				if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+					this.realtimeSubscribed = false;
+					this.core.ui.updateMultiplayerStatus("reconnecting", Math.max(1, this.visitors.size + 1));
+					this.schedulePeerFallback();
+				}
+				if (status === "CLOSED" && this.connected) {
+					this.realtimeSubscribed = false;
+					this.core.ui.updateMultiplayerStatus("reconnecting", Math.max(1, this.visitors.size + 1));
+					this.schedulePeerFallback();
+				}
+			});
+		this.schedulePeerFallback();
+
+		window.addEventListener("pagehide", () => {
+			void this.realtimeChannel?.untrack();
+			if (this.realtimeClient && this.realtimeChannel) void this.realtimeClient.removeChannel(this.realtimeChannel);
+		}, {once: true});
+	}
+
+	private schedulePeerFallback() {
+		if (!this.useCentralRealtime || this.centralFallbackTimer !== null) return;
+		this.centralFallbackTimer = window.setTimeout(() => {
+			this.centralFallbackTimer = null;
+			if (!this.useCentralRealtime || this.realtimeSubscribed) return;
+			console.warn("Supabase Realtime chưa kết nối sau 12 giây; chuyển sang WebRTC dự phòng.");
+			if (this.realtimeClient && this.realtimeChannel) void this.realtimeClient.removeChannel(this.realtimeChannel);
+			this.realtimeClient = null;
+			this.realtimeChannel = null;
+			this.useCentralRealtime = false;
+			for (const peerId of [...this.visitors.keys()]) this.removeVisitor(peerId);
+			this.connectPeerFallback(this.activeRoomId);
+		}, 12000);
+	}
+
+	private clearCentralFallback() {
+		if (this.centralFallbackTimer === null) return;
+		window.clearTimeout(this.centralFallbackTimer);
+		this.centralFallbackTimer = null;
+	}
+
 	update(delta: number) {
-		if (!this.poseAction) return;
+		if (!this.poseAction && !this.realtimeChannel) return;
 
 		const current = this.character.position;
 		const movementX = current.x - this.lastPosition.x;
@@ -128,10 +226,11 @@ export default class Multiplayer {
 	}
 
 	private sendPose(target?: string) {
-		if (!this.poseAction) return;
+		if (!this.poseAction && !this.realtimeChannel) return;
 		const position = this.character.position;
 		const moved = position.distanceToSquared(this.lastSentPosition) > 0.0025;
 		const payload: PosePayload = {
+			id: this.clientId,
 			x: Number(position.x.toFixed(3)),
 			y: Number(position.y.toFixed(3)),
 			z: Number(position.z.toFixed(3)),
@@ -141,7 +240,11 @@ export default class Multiplayer {
 		};
 		this.lastSentPosition.copy(position);
 		this.lastSentAt = performance.now();
-		void this.poseAction.send(payload, target ? {target} : undefined).catch(() => undefined);
+		if (this.useCentralRealtime && this.realtimeChannel && this.realtimeSubscribed) {
+			void this.realtimeChannel.send({type: "broadcast", event: "pose", payload}).catch(() => undefined);
+		} else if (this.poseAction) {
+			void this.poseAction.send(payload, target ? {target} : undefined).catch(() => undefined);
+		}
 	}
 
 	private receivePose(peerId: string, payload: PosePayload) {
@@ -166,13 +269,19 @@ export default class Multiplayer {
 	}
 
 	private handleSendChat([rawMessage]: [string]) {
-		if (!this.chatAction) return;
+		if (!this.chatAction && !this.realtimeChannel) return;
+		if (this.useCentralRealtime && !this.realtimeSubscribed) return;
 		const text = this.safeMessage(rawMessage);
 		const now = Date.now();
 		if (!text || now - this.lastChatAt < 500) return;
 		this.lastChatAt = now;
 		this.core.ui.appendChatMessage(this.visitorName, text, true, now);
-		void this.chatAction.send({name: this.visitorName, text}).catch(() => undefined);
+		const payload: ChatPayload = {id: this.clientId, name: this.visitorName, text};
+		if (this.useCentralRealtime && this.realtimeChannel && this.realtimeSubscribed) {
+			void this.realtimeChannel.send({type: "broadcast", event: "chat", payload}).catch(() => undefined);
+		} else if (this.chatAction) {
+			void this.chatAction.send(payload).catch(() => undefined);
+		}
 	}
 
 	private receiveChat(peerId: string, payload: ChatPayload) {
@@ -304,12 +413,26 @@ export default class Multiplayer {
 		this.peerChatTimes.delete(peerId);
 	}
 
-	private updateVisitorCount() {
-		const peerCount = this.room ? Object.keys(this.room.getPeers()).length : this.visitors.size;
-		this.core.ui.updateMultiplayerStatus("online", peerCount + 1);
+	private syncCentralPresence() {
+		if (!this.realtimeChannel || !this.realtimeSubscribed) return;
+		const state = this.realtimeChannel.presenceState() as Record<string, Array<{id?: string}>>;
+		const presentIds = new Set<string>();
+		Object.values(state).flat().forEach(presence => {
+			if (presence.id) presentIds.add(String(presence.id));
+		});
+		presentIds.add(this.clientId);
+		for (const peerId of this.visitors.keys()) {
+			if (!presentIds.has(peerId)) this.removeVisitor(peerId);
+		}
+		this.core.ui.updateMultiplayerStatus("online", presentIds.size);
 	}
 
-	private handleConnectionError() {
-		this.core.ui.updateMultiplayerStatus("offline");
+	private updateVisitorCount() {
+		if (this.useCentralRealtime) {
+			this.syncCentralPresence();
+			return;
+		}
+		const peerCount = this.room ? Object.keys(this.room.getPeers()).length : this.visitors.size;
+		this.core.ui.updateMultiplayerStatus("fallback", peerCount + 1);
 	}
 }

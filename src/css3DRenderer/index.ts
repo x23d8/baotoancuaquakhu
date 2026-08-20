@@ -10,11 +10,10 @@ export default class Css3DRenderer {
 	private css_scene: Scene;
 	private css_renderer: CSS3DRenderer;
 	private iframe!: HTMLIFrameElement;
+	private interaction_iframe!: HTMLIFrameElement;
 	private css_root: HTMLElement;
 	private screen_position = new Vector3(-15.55, 5.5, 36.33);
 	private interaction_position = new Vector3(-12.7, 5, 36.33);
-	private saved_camera_position = new Vector3();
-	private saved_camera_target = new Vector3();
 	private is_near_computer = false;
 	isInteracting = false;
 
@@ -28,6 +27,7 @@ export default class Css3DRenderer {
 		this._initRenderer();
 		this._initResponsiveResize();
 		this._createCssObj();
+		this._createInteractionOverlay();
 		document.addEventListener("keydown", this._handleKeyDown.bind(this));
 		window.addEventListener("message", this._handleDesktopMessage.bind(this));
 	}
@@ -84,6 +84,21 @@ export default class Css3DRenderer {
 		this.css_scene.add(object);
 	}
 
+	private _createInteractionOverlay() {
+		this.interaction_iframe = document.createElement("iframe");
+		this.interaction_iframe.src = IFRAME_SRC;
+		this.interaction_iframe.title = "Desktop Windows XP của máy lưu trữ bảo tàng";
+		this.interaction_iframe.style.position = "fixed";
+		this.interaction_iframe.style.inset = "0";
+		this.interaction_iframe.style.zIndex = "10000";
+		this.interaction_iframe.style.display = "none";
+		this.interaction_iframe.style.width = "100vw";
+		this.interaction_iframe.style.height = "100vh";
+		this.interaction_iframe.style.border = "0";
+		this.interaction_iframe.style.background = "#2f83cf";
+		document.body.appendChild(this.interaction_iframe);
+	}
+
 	private _handleKeyDown(event: KeyboardEvent) {
 		if (event.repeat) return;
 		if (event.code === "KeyE" && this.is_near_computer && !this.isInteracting) {
@@ -98,25 +113,17 @@ export default class Css3DRenderer {
 
 	private _enterComputer() {
 		this.isInteracting = true;
-		this.saved_camera_position.copy(this.core.camera.position);
-		this.saved_camera_target.copy(this.core.orbit_controls.target);
 		this.core.control_manage.disabled();
 		this.core.orbit_controls.enabled = false;
-		this.core.camera.position.set(-12.65, 5.5, 36.33);
-		this.core.camera.lookAt(this.screen_position);
-		this.core.orbit_controls.target.copy(this.screen_position);
-		this.css_root.style.zIndex = "35";
-		this.iframe.style.pointerEvents = "auto";
-		this.core.ui.updateComputerPrompt(true, true);
-		window.setTimeout(() => this.iframe.focus(), 0);
+		this.interaction_iframe.style.display = "block";
+		this.core.ui.updateComputerPrompt(false, false);
+		window.setTimeout(() => this.interaction_iframe.focus(), 0);
 	}
 
 	private _exitComputer() {
+		if (!this.isInteracting) return;
 		this.isInteracting = false;
-		this.iframe.style.pointerEvents = "none";
-		this.css_root.style.zIndex = "0";
-		this.core.camera.position.copy(this.saved_camera_position);
-		this.core.orbit_controls.target.copy(this.saved_camera_target);
+		this.interaction_iframe.style.display = "none";
 		this.core.orbit_controls.enabled = true;
 		this.core.orbit_controls.update();
 		this.core.control_manage.enabled();
@@ -124,7 +131,7 @@ export default class Css3DRenderer {
 	}
 
 	private _handleDesktopMessage(event: MessageEvent) {
-		if (event.source !== this.iframe.contentWindow) return;
+		if (event.source !== this.iframe.contentWindow && event.source !== this.interaction_iframe.contentWindow) return;
 		if (event.data?.type === "museum-computer-exit") this._exitComputer();
 		if (event.data?.type === "museum-toggle-audio") this.core.$emit(ON_TOGGLE_AUDIO);
 	}

@@ -34,9 +34,20 @@ Sau khi bấm “Bước vào bảo tàng”, trình duyệt tự kết nối v�
 
 - Phòng chung mặc định: URL của website như bình thường.
 - Phòng riêng: thêm `?phong=ten-phong` vào URL và gửi đúng liên kết đó cho người tham gia, ví dụ `https://baotoancuaquakhu.vercel.app/?phong=lop-vnr202`.
-- Kết nối dùng WebRTC ngang hàng. Ứng dụng không yêu cầu tài khoản; mỗi tab chỉ gửi vị trí, hướng di chuyển và một tên tạm như `Khách 328` cho các máy trong phòng.
+- Kênh chính dùng Supabase Realtime: Presence đồng bộ người đang online, Broadcast truyền vị trí và chat qua WebSocket trung tâm. WebRTC chỉ được dùng làm phương án dự phòng khi chưa cấu hình Supabase.
+- Ứng dụng không yêu cầu tài khoản; mỗi tab chỉ gửi vị trí, hướng di chuyển và một tên tạm như `Khách 328` cho các máy trong phòng.
 - Chat trong phòng chỉ được giữ trong bộ nhớ của tab (tối đa 80 tin gần nhất), không ghi cơ sở dữ liệu và không khôi phục lịch sử sau khi refresh hoặc mở lại website.
-- Phù hợp nhất với nhóm tham quan nhỏ. Nếu cần phục vụ phòng đông hoặc lưu tài khoản/trạng thái lâu dài, dự án nên chuyển sang máy chủ realtime chuyên dụng.
+- Không có bảng database cho multiplayer và không lưu lịch sử chat. Presence/Broadcast chỉ giữ trạng thái của phiên đang kết nối.
+
+### Cấu hình Supabase Realtime
+
+1. Tạo một Supabase project và mở mục **Connect**.
+2. Sao chép **Project URL** và **Publishable key**. Không dùng Secret key hoặc `service_role` ở frontend.
+3. Tạo `.env.local` theo `.env.example` để chạy local.
+4. Trên Vercel, thêm hai biến cho Production và Preview:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+5. Redeploy website. Chấm trạng thái xanh nghĩa là đang dùng kênh trung tâm; trạng thái vàng “Dự phòng” nghĩa là deployment chưa nhận được hai biến trên.
 
 ## Project Structure
 ```text
