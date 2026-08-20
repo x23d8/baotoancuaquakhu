@@ -69,6 +69,8 @@ Phiên bản hiện tại đã được thiết kế lại thành bảo tàng l�
    Positional audio simulates real-world sound propagation, giving the music a stronger sense of space and improving the viewing experience.
 
 ## Running the Project
+Yêu cầu Node.js 24 trở lên.
+
 To setup a dev environment:
 ```text
 # Clone the repository

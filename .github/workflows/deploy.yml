@@ -4,36 +4,37 @@ on:
   push:
     branches: [ "master" ]
 
+permissions:
+  contents: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6
         with:
-          node-version: "18.X"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          node-version: "24"
+          cache: npm
 
       - name: Install deps
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Modify "base" from vite.config.ts
-        run: |
-         sed -i 's|base: "./"|base: "/gallery"|' vite.config.ts
+        run: npm ci
 
       - name: build app
-        run: pnpm run build
+        run: npm run build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.PAT_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
           dotfiles: true

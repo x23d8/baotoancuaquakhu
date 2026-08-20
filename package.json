@@ -13,6 +13,10 @@
   ],
   "license": "GPL-3.0-only",
   "author": "x23d8",
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "npm@11.6.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -21,7 +25,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "devDependencies": {
-    "@types/node": "^18.11.19",
+    "@types/node": "^24.13.3",
     "@types/three": "^0.154.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",

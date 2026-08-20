@@ -252,7 +252,7 @@ export const EXHIBITS_BY_SLOT: Record<string, ExhibitInfo> = Object.fromEntries(
 export const AUDIO_URL = new URL("./assets/audio/quoc-ca-viet-nam.ogg", import.meta.url).href;
 
 /* The museum computer is now a Vietnamese historical archive display. */
-export const IFRAME_SRC = new URL("/archive/index.html", import.meta.url).href;
+export const IFRAME_SRC = `${import.meta.env.BASE_URL}archive/index.html`;
 
 export const ON_LOAD_PROGRESS = "on-load-progress";
 export const ON_LOAD_MODEL_FINISH = "on-load-model-finish";
