@@ -33,6 +33,7 @@ Sau khi bấm “Bước vào bảo tàng”, trình duyệt tự kết nối v�
 - Phòng chung mặc định: URL của website như bình thường.
 - Phòng riêng: thêm `?phong=ten-phong` vào URL và gửi đúng liên kết đó cho người tham gia, ví dụ `https://baotoancuaquakhu.vercel.app/?phong=lop-vnr202`.
 - Kết nối dùng WebRTC ngang hàng. Ứng dụng không yêu cầu tài khoản; mỗi tab chỉ gửi vị trí, hướng di chuyển và một tên tạm như `Khách 328` cho các máy trong phòng.
+- Chat trong phòng chỉ được giữ trong bộ nhớ của tab (tối đa 80 tin gần nhất), không ghi cơ sở dữ liệu và không khôi phục lịch sử sau khi refresh hoặc mở lại website.
 - Phù hợp nhất với nhóm tham quan nhỏ. Nếu cần phục vụ phòng đông hoặc lưu tài khoản/trạng thái lâu dài, dự án nên chuyển sang máy chủ realtime chuyên dụng.
 
 ## Project Structure
@@ -98,3 +99,14 @@ To serve a production build:
 # Build for production
 npm run build
 ```
+
+## Deploy Vercel
+
+Vercel phải deploy từ nhánh `master`, là nhánh chứa mã nguồn và `package.json`. Không chọn `gh-pages`: nhánh đó chỉ là kết quả build dành cho GitHub Pages.
+
+Thiết lập dự án Vercel:
+
+- Production Branch: `master`
+- Framework Preset: `Vite`
+- Root Directory: để trống
+- Build và Output Directory: dùng cấu hình trong `vercel.json`

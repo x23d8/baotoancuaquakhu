@@ -263,3 +263,4 @@ export const ON_KEY_DOWN = "on-key-down";
 export const ON_KEY_UP = "on-key-up";
 export const ON_ENTER_APP = "on-enter-app";
 export const ON_TOGGLE_AUDIO = "on-toggle-audio";
+export const ON_SEND_CHAT = "on-send-chat";

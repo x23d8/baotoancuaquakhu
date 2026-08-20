@@ -1,5 +1,5 @@
 import Core from "../core";
-import {ExhibitInfo, ON_ENTER_APP, ON_TOGGLE_AUDIO} from "../Constants";
+import {ExhibitInfo, ON_ENTER_APP, ON_SEND_CHAT, ON_TOGGLE_AUDIO} from "../Constants";
 
 const normalizeVietnamese = (value: string) => value.normalize("NFC");
 
@@ -35,6 +35,13 @@ export default class UI {
 		audio_btn: HTMLElement;
 		multiplayer_presence: HTMLElement;
 		multiplayer_label: HTMLElement;
+		chat_box: HTMLElement;
+		chat_toggle: HTMLButtonElement;
+		chat_panel: HTMLElement;
+		chat_messages: HTMLElement;
+		chat_form: HTMLFormElement;
+		chat_input: HTMLInputElement;
+		chat_unread: HTMLElement;
 	};
 
 	constructor() {
@@ -67,11 +74,23 @@ export default class UI {
 			sources_panel: document.querySelector(".sources-panel")!,
 			audio_btn: document.querySelector(".audio-toggle")!,
 			multiplayer_presence: document.querySelector(".multiplayer-presence")!,
-			multiplayer_label: document.querySelector(".presence-label")!
+			multiplayer_label: document.querySelector(".presence-label")!,
+			chat_box: document.querySelector(".chat-box")!,
+			chat_toggle: document.querySelector(".chat-toggle")!,
+			chat_panel: document.querySelector(".chat-panel")!,
+			chat_messages: document.querySelector(".chat-messages")!,
+			chat_form: document.querySelector(".chat-form")!,
+			chat_input: document.querySelector(".chat-input")!,
+			chat_unread: document.querySelector(".chat-unread")!
 		};
 
 		document.body.addEventListener("click", this.handleClick.bind(this));
 		document.addEventListener("keydown", this.handleKeyDown.bind(this));
+		this.doms.chat_form.addEventListener("submit", this.handleChatSubmit.bind(this));
+		this.doms.chat_input.addEventListener("keydown", event => {
+			if (event.key === "Escape") this.toggleChat(false);
+			else event.stopPropagation();
+		});
 	}
 
 	handleClick(event: MouseEvent) {
@@ -106,6 +125,14 @@ export default class UI {
 			this.core.$emit(ON_TOGGLE_AUDIO);
 			return;
 		}
+		if (target.closest(".chat-toggle")) {
+			this.toggleChat(true);
+			return;
+		}
+		if (target.closest(".chat-close")) {
+			this.toggleChat(false);
+			return;
+		}
 		const related_button = target.closest<HTMLButtonElement>(".related-image");
 		if (related_button) {
 			this.updateMainImage(
@@ -122,12 +149,14 @@ export default class UI {
 		if (this.doms.boards_dialog.style.visibility === "visible") this.hideBoardsBox();
 		if (!this.doms.operating_intro.classList.contains("display-none")) this.hideHelp();
 		if (!this.doms.sources_panel.classList.contains("display-none")) this.hideSources();
+		if (!this.doms.chat_panel.classList.contains("display-none")) this.toggleChat(false);
 	}
 
 	onClickEnterApp() {
 		this.doms.loading_complete.remove();
 		this.doms.loading_media.remove();
 		this.core.$emit(ON_ENTER_APP);
+		this.doms.chat_box.classList.remove("display-none");
 	}
 
 	showHelp() {
@@ -263,5 +292,58 @@ export default class UI {
 		this.doms.multiplayer_presence.title = state === "online"
 			? `${visitors} người đang cùng tham quan phòng này`
 			: labels[state];
+	}
+
+	appendChatMessage(name: string, text: string, isSelf = false, sentAt = Date.now()) {
+		this.doms.chat_messages.querySelector(".chat-empty")?.remove();
+		const message = document.createElement("article");
+		message.className = `chat-message${isSelf ? " is-self" : ""}`;
+		const meta = document.createElement("div");
+		const author = document.createElement("b");
+		const time = document.createElement("time");
+		const body = document.createElement("p");
+		author.textContent = isSelf ? "Bạn" : normalizeVietnamese(name);
+		time.dateTime = new Date(sentAt).toISOString();
+		time.textContent = new Intl.DateTimeFormat("vi-VN", {hour: "2-digit", minute: "2-digit"}).format(sentAt);
+		body.textContent = normalizeVietnamese(text);
+		meta.append(author, time);
+		message.append(meta, body);
+		this.doms.chat_messages.appendChild(message);
+
+		while (this.doms.chat_messages.childElementCount > 80) {
+			this.doms.chat_messages.firstElementChild?.remove();
+		}
+		this.doms.chat_messages.scrollTop = this.doms.chat_messages.scrollHeight;
+		if (!isSelf && this.doms.chat_panel.classList.contains("display-none")) this.incrementUnread();
+	}
+
+	private handleChatSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		const message = this.doms.chat_input.value.trim().slice(0, 280);
+		if (!message) return;
+		this.core.$emit(ON_SEND_CHAT, message);
+		this.doms.chat_input.value = "";
+		this.doms.chat_input.focus();
+	}
+
+	private toggleChat(open: boolean) {
+		this.doms.chat_panel.classList.toggle("display-none", !open);
+		this.doms.chat_panel.setAttribute("aria-hidden", String(!open));
+		this.doms.chat_toggle.setAttribute("aria-expanded", String(open));
+		if (open) {
+			this.clearUnread();
+			this.doms.chat_input.focus();
+		}
+	}
+
+	private incrementUnread() {
+		const count = Math.min(99, Number(this.doms.chat_unread.textContent || 0) + 1);
+		this.doms.chat_unread.textContent = String(count);
+		this.doms.chat_unread.classList.remove("display-none");
+	}
+
+	private clearUnread() {
+		this.doms.chat_unread.textContent = "0";
+		this.doms.chat_unread.classList.add("display-none");
 	}
 }

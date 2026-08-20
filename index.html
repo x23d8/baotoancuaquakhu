@@ -53,11 +53,32 @@
           <span class="presence-dot" aria-hidden="true"></span>
           <span class="presence-label">Chưa kết nối</span>
         </div>
-        <button class="audio-toggle" type="button" aria-pressed="false">Tắt Quốc ca</button>
+        <button class="audio-toggle" type="button" aria-pressed="false">Tắt nhạc</button>
         <button class="sources-button" type="button">Sổ nguồn</button>
         <button class="help" type="button" title="Hướng dẫn">?</button>
       </div>
     </header>
+
+    <aside class="chat-box display-none" aria-label="Trò chuyện trong phòng">
+      <button class="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-panel">
+        <span>Trò chuyện</span>
+        <span class="chat-unread display-none" aria-label="Tin nhắn chưa đọc">0</span>
+      </button>
+      <section class="chat-panel display-none" id="chat-panel" aria-hidden="true">
+        <header>
+          <div><b>TRÒ CHUYỆN</b><small>Chỉ tồn tại trong phiên hiện tại</small></div>
+          <button class="chat-close" type="button" aria-label="Thu nhỏ trò chuyện">×</button>
+        </header>
+        <div class="chat-messages" role="log" aria-live="polite" aria-relevant="additions">
+          <p class="chat-empty">Chưa có tin nhắn. Hãy chào những người đang cùng tham quan.</p>
+        </div>
+        <form class="chat-form">
+          <label class="sr-only" for="chat-input">Tin nhắn</label>
+          <input id="chat-input" class="chat-input" type="text" maxlength="280" autocomplete="off" placeholder="Nhập tin nhắn…" />
+          <button type="submit">Gửi</button>
+        </form>
+      </section>
+    </aside>
 
     <div id="css"></div>
     <div id="app"></div>

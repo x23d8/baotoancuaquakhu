@@ -14,8 +14,10 @@ import {
 import {joinRoom, type MessageAction, type Room} from "trystero";
 import Core from "../core";
 import Character from "../character";
+import {ON_SEND_CHAT} from "../Constants";
 
 type PosePayload = Record<string, string | number | boolean>;
+type ChatPayload = Record<string, string>;
 
 type RemoteVisitor = {
 	root: Group;
@@ -40,6 +42,7 @@ export default class Multiplayer {
 	private character: Character;
 	private room: Room | null = null;
 	private poseAction: MessageAction<PosePayload> | null = null;
+	private chatAction: MessageAction<ChatPayload> | null = null;
 	private visitors = new Map<string, RemoteVisitor>();
 	private connected = false;
 	private lastPosition = new Vector3();
@@ -47,11 +50,14 @@ export default class Multiplayer {
 	private lastSentAt = 0;
 	private lastYaw = 0;
 	private visitorName = this.getVisitorName();
+	private lastChatAt = 0;
+	private peerChatTimes = new Map<string, number>();
 
 	constructor(character: Character) {
 		this.core = new Core();
 		this.character = character;
 		this.lastPosition.copy(character.position);
+		this.core.$on(ON_SEND_CHAT, this.handleSendChat.bind(this));
 	}
 
 	connect() {
@@ -69,6 +75,8 @@ export default class Multiplayer {
 			);
 			this.poseAction = this.room.makeAction<PosePayload>("visitor-pose");
 			this.poseAction.onMessage = (payload, {peerId}) => this.receivePose(peerId, payload);
+			this.chatAction = this.room.makeAction<ChatPayload>("visitor-chat");
+			this.chatAction.onMessage = (payload, {peerId}) => this.receiveChat(peerId, payload);
 			this.room.onPeerJoin = peerId => {
 				this.sendPose(peerId);
 				this.updateVisitorCount();
@@ -155,6 +163,26 @@ export default class Multiplayer {
 		visitor.target.set(x, y - 5, z);
 		visitor.targetYaw = yaw;
 		visitor.moving = payload.moving === true;
+	}
+
+	private handleSendChat([rawMessage]: [string]) {
+		if (!this.chatAction) return;
+		const text = this.safeMessage(rawMessage);
+		const now = Date.now();
+		if (!text || now - this.lastChatAt < 500) return;
+		this.lastChatAt = now;
+		this.core.ui.appendChatMessage(this.visitorName, text, true, now);
+		void this.chatAction.send({name: this.visitorName, text}).catch(() => undefined);
+	}
+
+	private receiveChat(peerId: string, payload: ChatPayload) {
+		const now = Date.now();
+		const previousMessageAt = this.peerChatTimes.get(peerId) || 0;
+		if (now - previousMessageAt < 300) return;
+		const text = this.safeMessage(payload.text);
+		if (!text) return;
+		this.peerChatTimes.set(peerId, now);
+		this.core.ui.appendChatMessage(this.safeName(payload.name), text, false, now);
 	}
 
 	private createVisitor(peerId: string, name: string): RemoteVisitor {
@@ -245,6 +273,11 @@ export default class Multiplayer {
 		return value.replace(/[<>]/g, "").trim().slice(0, 24) || "Khách tham quan";
 	}
 
+	private safeMessage(value: unknown): string {
+		if (typeof value !== "string") return "";
+		return value.replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, 280);
+	}
+
 	private getVisitorName(): string {
 		const storageKey = "museum-visitor-name";
 		const existing = sessionStorage.getItem(storageKey);
@@ -268,6 +301,7 @@ export default class Multiplayer {
 			}
 		});
 		this.visitors.delete(peerId);
+		this.peerChatTimes.delete(peerId);
 	}
 
 	private updateVisitorCount() {
