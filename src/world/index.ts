@@ -30,7 +30,7 @@ export default class World {
 
 		this.environment = new Environment();
 		this.character = new Character({speed: 12});
-		this.css_3d_renderer = new Css3DRenderer();
+		this.css_3d_renderer = new Css3DRenderer(this.character);
 		this.audio = new Audio();
 		this.ray_caster_controls = new RayCasterControls();
 		this.multiplayer = new Multiplayer(this.character);
@@ -39,9 +39,9 @@ export default class World {
 	update(delta: number) {
 		if (this.environment.collider && this.environment.is_load_finished) {
 			this.css_3d_renderer.update();
-			this.character.update(delta, this.environment.collider);
+			if (!this.css_3d_renderer.isInteracting) this.character.update(delta, this.environment.collider);
 			this.multiplayer.update(delta);
-			this.ray_caster_controls.updateTooltipRayCast(this.environment.raycast_objects);
+			if (!this.css_3d_renderer.isInteracting) this.ray_caster_controls.updateTooltipRayCast(this.environment.raycast_objects);
 		}
 	}
 
@@ -76,7 +76,7 @@ export default class World {
 			this.core.ui.updateLoadingProgress("Đang phục chế ảnh tư liệu số…");
 		}
 		if (/.*\.(m4a|mp3|ogg)$/i.test(url)) {
-			this.core.ui.updateLoadingProgress("Đang chuẩn bị bản ghi Quốc ca…");
+			this.core.ui.updateLoadingProgress("Đang chuẩn bị bài Hello Vietnam…");
 		}
 	}
 

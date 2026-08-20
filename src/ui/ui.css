@@ -198,6 +198,8 @@ input,
 .preview-tooltip, .preview-tips { position: fixed; z-index: 25; left: 50%; transform: translateX(-50%); transition: opacity .25s; user-select: none; pointer-events: none; }
 .preview-tooltip { bottom: 58px; max-width: min(520px, 80vw); padding: 10px 16px; color: #fff5d9; background: rgba(45, 9, 11, .94); border: 1px solid rgba(214, 173, 79, .6); text-align: center; font: 700 .82rem/1.4 var(--font-vietnamese); letter-spacing: 0; }
 .preview-tips { bottom: 30px; color: #d7bd75; font: 700 .62rem var(--font-vietnamese); letter-spacing: .12em; text-shadow: 0 2px 6px #000; }
+.computer-prompt { position: fixed; z-index: 48; left: 50%; bottom: 92px; display: flex; align-items: center; gap: 10px; transform: translateX(-50%); padding: 9px 14px; border: 1px solid rgba(214, 173, 79, .75); color: #fff2d0; background: rgba(48, 11, 13, .94); box-shadow: 0 10px 30px rgba(0, 0, 0, .36); pointer-events: none; font: 800 .72rem var(--font-vietnamese); letter-spacing: .05em; }
+.computer-prompt kbd { min-width: 36px; color: #351012; background: var(--museum-gold-pale); border-color: #e6c66e; }
 
 .boards-info, .sources-panel, .operating-intro {
 	position: fixed;

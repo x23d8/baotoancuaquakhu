@@ -246,12 +246,10 @@ export const EXHIBITS_BY_SLOT: Record<string, ExhibitInfo> = Object.fromEntries(
 	EXHIBITS.map(exhibit => [String(exhibit.slot), exhibit])
 );
 
-/* Official recording of “Tiến quân ca”; source and public-domain declaration:
- * https://commons.wikimedia.org/wiki/File:Quoc_ca_Viet_Nam.ogg
- */
-export const AUDIO_URL = new URL("./assets/audio/quoc-ca-viet-nam.ogg", import.meta.url).href;
+/* Licensed audio file supplied by the project owner. */
+export const AUDIO_URL = new URL("./assets/audio/hello-vietnam.mp3", import.meta.url).href;
 
-/* The museum computer is now a Vietnamese historical archive display. */
+/* Interactive museum computer desktop. */
 export const IFRAME_SRC = `${import.meta.env.BASE_URL}archive/index.html`;
 
 export const ON_LOAD_PROGRESS = "on-load-progress";

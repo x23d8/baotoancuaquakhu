@@ -3,14 +3,76 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ảnh tư liệu 30/4/1975</title>
+  <title>Máy lưu trữ Dòng chảy Đổi mới</title>
   <style>
-    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000}.screen{width:100%;height:100%;background:#000}.screen img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+    :root{--blue:#124b8a;--blue2:#377bc0;--task:#173e77;--paper:#f5f1e6;--ink:#172333;--select:#0a58b5}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:Tahoma,"Segoe UI",Arial,sans-serif;background:#236fa7;color:#fff;user-select:none}
+    button{font:inherit}.desktop{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 72% 22%,rgba(255,255,255,.22),transparent 18%),linear-gradient(145deg,#164c83 0 38%,#3b8cbd 38% 50%,#1c6b9d 50% 63%,#0d416f 63%);isolation:isolate}
+    .desktop:before{content:"";position:absolute;inset:-10%;z-index:-1;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.11) 42% 44%,transparent 44% 51%,rgba(255,255,255,.07) 51% 53%,transparent 53%);transform:rotate(-6deg)}
+    .brand{position:absolute;right:48px;top:52px;text-align:right;text-shadow:0 2px 5px #06345e}.brand b{display:block;font-size:38px;letter-spacing:.08em}.brand small{font-size:15px;letter-spacing:.22em;opacity:.84}
+    .icons{display:grid;grid-template-columns:repeat(2,118px);grid-auto-rows:124px;gap:10px 12px;padding:24px;width:max-content}.file{display:flex;flex-direction:column;align-items:center;gap:6px;width:110px;min-height:112px;padding:8px 4px;border:1px solid transparent;border-radius:3px;color:#fff;background:transparent;text-shadow:1px 1px 2px #062a4d;cursor:default}.file:focus,.file.selected{outline:none;border-color:rgba(255,255,255,.7);background:rgba(18,84,159,.7)}.file-icon{position:relative;display:grid;place-items:center;width:54px;height:48px;font-size:31px;text-shadow:none;filter:drop-shadow(2px 3px 1px rgba(0,0,0,.3))}.folder{border-radius:3px 5px 5px 5px;background:#e7bd45}.folder:before{content:"";position:absolute;left:2px;top:-6px;width:23px;height:9px;border-radius:3px 3px 0 0;background:#f1ce61}.document{background:#f7f7f2;border:2px solid #d4d9dd;color:#27649b}.music{border-radius:50%;background:radial-gradient(circle,#fff 0 9%,#1e2329 10% 22%,#d8dce0 23% 55%,#252a31 56%);color:#c31e35}.trash{font-size:40px}.file-label{max-width:102px;padding:2px 4px;text-align:center;font-size:13px;line-height:1.25}.file.selected .file-label{background:#0759b2}
+    .window{position:absolute;z-index:10;left:50%;top:48%;display:none;width:min(680px,88%);height:min(510px,73%);transform:translate(-50%,-50%);border:3px solid #164d96;border-radius:8px 8px 2px 2px;background:#ece9d8;box-shadow:8px 12px 30px rgba(0,0,0,.38);color:var(--ink);overflow:hidden}.window.open{display:grid;grid-template-rows:42px 1fr}.titlebar{display:flex;align-items:center;justify-content:space-between;padding:0 7px 0 12px;color:#fff;background:linear-gradient(#2f7bd3,#0e51ac 55%,#073c8b);cursor:move}.titlebar b{font-size:15px;text-shadow:1px 1px #063b80}.titlebar button{width:30px;height:28px;border:2px solid #fff;border-radius:5px;color:#fff;background:linear-gradient(#e98a6d,#c92d1b);font-size:20px;line-height:20px;cursor:pointer}.window-body{overflow:auto;background:var(--paper)}.toolbar{display:flex;gap:8px;padding:8px 12px;border-bottom:1px solid #c7c3b5;background:#f3f0e6}.toolbar button{border:1px solid #9b9b91;padding:5px 12px;background:linear-gradient(#fff,#ddd9cb);cursor:pointer}.address{flex:1;padding:5px 8px;border:1px solid #9b9b91;background:#fff;color:#32445a;font-size:12px}.content{padding:22px 25px}.content h1{margin:0 0 8px;color:#174f91;font-size:26px}.content h2{margin:22px 0 8px;color:#6c2025;font-size:18px}.content p,.content li{font-size:14px;line-height:1.55}.content .lead{margin-top:0;color:#52606d}.timeline{display:grid;grid-template-columns:100px 1fr;gap:0;margin-top:18px;border:1px solid #aab2bb}.timeline b,.timeline span{padding:11px;border-bottom:1px solid #c6cbd0}.timeline b{color:#fff;background:#2a659d}.timeline span{background:#fff}.notice{padding:12px 14px;border-left:5px solid #c4932e;background:#fff4cc}.music-card{display:flex;align-items:center;gap:18px;margin-top:18px;padding:17px;border:1px solid #a9b1b9;background:#fff}.disc{display:grid;place-items:center;width:78px;height:78px;flex:0 0 auto;border-radius:50%;background:radial-gradient(circle,#eee 0 8%,#282d34 9% 24%,#d9dde1 25% 57%,#22272d 58%);font-size:22px}.music-card button{margin-top:8px;border:1px solid #154d91;padding:8px 14px;color:#fff;background:#2369b2;cursor:pointer}
+    .start-menu{position:absolute;z-index:30;left:0;bottom:44px;display:none;width:310px;border:2px solid #174c91;border-radius:7px 7px 0 0;background:#f6f4e9;color:#172333;box-shadow:4px -4px 18px rgba(0,0,0,.3)}.start-menu.open{display:block}.start-head{padding:18px;color:#fff;background:linear-gradient(90deg,#1658a5,#3a88d1);font-weight:700}.start-menu button{display:block;width:100%;border:0;padding:13px 18px;text-align:left;background:transparent;cursor:pointer}.start-menu button:hover{background:#dcecff}.taskbar{position:absolute;z-index:40;left:0;right:0;bottom:0;display:flex;height:46px;border-top:2px solid #5c9ce3;background:linear-gradient(#2467b2,#174682);box-shadow:0 -2px 8px rgba(0,0,0,.25)}.start-button{width:138px;border:0;border-radius:0 14px 14px 0;color:#fff;background:linear-gradient(90deg,#2a7c34,#4b9b46);font-weight:800;font-style:italic;text-shadow:1px 1px #1f5a27;cursor:pointer}.task-window{align-self:center;margin-left:12px;border:1px solid #0c356f;padding:7px 18px;color:#fff;background:#285c9c;box-shadow:inset 1px 1px rgba(255,255,255,.25)}.tray{display:flex;align-items:center;gap:12px;margin-left:auto;padding:0 15px;border-left:1px solid #0c4786;background:#2580b7;font-size:12px}.exit-computer{border:1px solid rgba(255,255,255,.5);padding:6px 10px;color:#fff;background:#a33331;cursor:pointer}
   </style>
 </head>
 <body>
-  <main class="screen">
-    <img src="../tank.png" alt="Xe tăng Quân Giải phóng tiến vào Dinh Độc Lập ngày 30 tháng 4 năm 1975">
+  <main class="desktop" id="desktop">
+    <div class="brand"><b>DÒNG CHẢY OS</b><small>PHÒNG LƯU TRỮ · 2006</small></div>
+    <section class="icons" aria-label="Tệp trên màn hình">
+      <button class="file" data-file="museum"><span class="file-icon folder"></span><span class="file-label">Bảo tàng</span></button>
+      <button class="file" data-file="timeline"><span class="file-icon folder"></span><span class="file-label">Timeline 1996–2006</span></button>
+      <button class="file" data-file="readme"><span class="file-icon document">TXT</span><span class="file-label">Hướng dẫn.txt</span></button>
+      <button class="file" data-file="music"><span class="file-icon music">♪</span><span class="file-label">Hello Vietnam.mp3</span></button>
+      <button class="file" data-file="sources"><span class="file-icon folder"></span><span class="file-label">Nguồn tư liệu</span></button>
+      <button class="file" data-file="trash"><span class="file-icon trash">🗑</span><span class="file-label">Thùng rác</span></button>
+    </section>
+
+    <section class="window" id="window" role="dialog" aria-modal="false" aria-labelledby="window-title">
+      <header class="titlebar" id="titlebar"><b id="window-title">Bảo tàng</b><button id="close" aria-label="Đóng">×</button></header>
+      <div class="window-body">
+        <div class="toolbar"><button id="back">← Quay lại</button><div class="address" id="address">C:\BAOTANG</div></div>
+        <div class="content" id="content"></div>
+      </div>
+    </section>
+
+    <nav class="start-menu" id="start-menu">
+      <div class="start-head">Khách tham quan</div>
+      <button data-file="museum">📁 Mở Bảo tàng</button>
+      <button data-file="timeline">🕘 Mở Timeline</button>
+      <button data-file="music">♫ Thông tin bài nhạc</button>
+      <button class="exit-computer">⏻ Trở lại không gian 3D</button>
+    </nav>
+
+    <footer class="taskbar">
+      <button class="start-button" id="start">DÒNG CHẢY</button>
+      <span class="task-window" id="task-window">Máy lưu trữ bảo tàng</span>
+      <div class="tray"><span>VI</span><time id="clock"></time><button class="exit-computer">ESC · Thoát</button></div>
+    </footer>
   </main>
+
+  <script>
+    const pages={
+      museum:{title:"Bảo tàng Dòng chảy Đổi mới",path:"C:\\BAOTANG",html:`<h1>Dòng chảy Đổi mới</h1><p class="lead">Máy lưu trữ nội bộ · giai đoạn 1996–2006</p><p>Không gian trưng bày theo tuyến từ Đại hội VIII, quá trình đẩy mạnh công nghiệp hóa – hiện đại hóa, đến Đại hội X, APEC 14 và dấu mốc Việt Nam gia nhập WTO.</p><div class="notice">Hãy đóng cửa sổ và nhấn <b>ESC</b> để trở lại không gian 3D, sau đó chọn trực tiếp từng ảnh tư liệu để đọc hồ sơ và trích dẫn.</div>`},
+      timeline:{title:"Timeline 1996–2006",path:"C:\\BAOTANG\\TIMELINE",html:`<h1>Ba lớp chuyển dịch</h1><div class="timeline"><b>1996–2000</b><span>Đẩy mạnh công nghiệp hóa, hiện đại hóa và xây dựng năng lực phát triển.</span><b>2001–2005</b><span>Định hình thể chế kinh tế thị trường định hướng xã hội chủ nghĩa và mở rộng hội nhập.</span><b>2006</b><span>Đại hội X, APEC 14 và hoàn tất tiến trình gia nhập WTO.</span></div><p class="lead">Nội dung chi tiết và nguồn kiểm chứng nằm trong các khung ảnh của bảo tàng.</p>`},
+      readme:{title:"Hướng dẫn.txt",path:"C:\\BAOTANG\\HUONGDAN.TXT",html:`<h1>Hướng dẫn sử dụng</h1><p>• Nhấp một lần để chọn biểu tượng.<br>• Nhấp đúp hoặc nhấn Enter để mở tệp.<br>• Kéo thanh tiêu đề để di chuyển cửa sổ.<br>• Nhấn ESC hoặc nút “Thoát” để quay lại bảo tàng.</p><p class="notice">Desktop này không ghi dữ liệu lên máy của người dùng.</p>`},
+      music:{title:"Hello Vietnam.mp3",path:"C:\\BAOTANG\\NHAC\\HELLO_VIETNAM.MP3",html:`<h1>Hello Vietnam</h1><p class="lead">Nhạc nền của không gian bảo tàng</p><div class="music-card"><div class="disc">♪</div><div><b>HELLO VIETNAM.MP3</b><p>Tệp âm thanh do chủ dự án cung cấp và xác nhận có quyền sử dụng.</p><button id="toggle-music">Bật / tắt nhạc nền</button></div></div>`},
+      sources:{title:"Nguồn tư liệu",path:"C:\\BAOTANG\\NGUON",html:`<h1>Kho nguồn tư liệu</h1><p>Các hồ sơ trong bảo tàng được đối chiếu giáo trình VNR202-2019, tài liệu P2–P6 của nhóm và nguồn ảnh chính thống. Credit cùng liên kết nguồn nằm trong từng hồ sơ hiện vật.</p><div class="notice">Không dùng desktop này thay cho phần trích dẫn chi tiết ở từng ảnh trưng bày.</div>`},
+      trash:{title:"Thùng rác",path:"C:\\THUNGRAC",html:`<h1>Thùng rác trống</h1><p>Không có tệp nào trong thư mục này.</p>`}
+    };
+    const win=document.getElementById("window"),content=document.getElementById("content"),title=document.getElementById("window-title"),address=document.getElementById("address"),startMenu=document.getElementById("start-menu");
+    let selected=null;
+    function selectFile(button){document.querySelectorAll(".file").forEach(item=>item.classList.remove("selected"));button.classList.add("selected");button.focus();selected=button.dataset.file}
+    function openFile(key){const page=pages[key];if(!page)return;title.textContent=page.title;address.textContent=page.path;content.innerHTML=page.html;win.classList.add("open");startMenu.classList.remove("open");document.getElementById("task-window").textContent=page.title;document.getElementById("toggle-music")?.addEventListener("click",()=>parent.postMessage({type:"museum-toggle-audio"},"*"))}
+    document.querySelectorAll(".file").forEach(button=>{button.addEventListener("click",()=>selectFile(button));button.addEventListener("dblclick",()=>openFile(button.dataset.file));button.addEventListener("keydown",event=>{if(event.key==="Enter")openFile(button.dataset.file)})});
+    document.querySelectorAll("[data-file]:not(.file)").forEach(button=>button.addEventListener("click",()=>openFile(button.dataset.file)));
+    document.getElementById("close").addEventListener("click",()=>win.classList.remove("open"));
+    document.getElementById("back").addEventListener("click",()=>win.classList.remove("open"));
+    document.getElementById("start").addEventListener("click",()=>startMenu.classList.toggle("open"));
+    document.querySelectorAll(".exit-computer").forEach(button=>button.addEventListener("click",()=>parent.postMessage({type:"museum-computer-exit"},"*")));
+    document.getElementById("desktop").addEventListener("click",event=>{if(event.target.id==="desktop"){document.querySelectorAll(".file").forEach(item=>item.classList.remove("selected"));selected=null;startMenu.classList.remove("open")}});
+    document.addEventListener("keydown",event=>{if(event.key==="Escape")parent.postMessage({type:"museum-computer-exit"},"*");if(event.key==="Enter"&&selected)openFile(selected)});
+    function updateClock(){document.getElementById("clock").textContent=new Intl.DateTimeFormat("vi-VN",{hour:"2-digit",minute:"2-digit"}).format(new Date())}updateClock();setInterval(updateClock,30000);
+    let drag=null;document.getElementById("titlebar").addEventListener("pointerdown",event=>{if(event.target.tagName==="BUTTON")return;const rect=win.getBoundingClientRect();drag={x:event.clientX-rect.left,y:event.clientY-rect.top};win.style.transform="none";document.getElementById("titlebar").setPointerCapture(event.pointerId)});document.getElementById("titlebar").addEventListener("pointermove",event=>{if(!drag)return;win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,event.clientX-drag.x))+"px";win.style.top=Math.max(0,Math.min(innerHeight-46-win.offsetHeight,event.clientY-drag.y))+"px"});document.getElementById("titlebar").addEventListener("pointerup",()=>drag=null);
+  </script>
 </body>
 </html>

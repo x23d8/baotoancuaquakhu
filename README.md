@@ -8,7 +8,7 @@ Trải nghiệm bảo tàng 3D trình bày tiến trình thay đổi trọng tâ
 - 10 hồ sơ hiện vật theo tuyến thời gian, gắn với nội dung P2–P6 trong `GROUP_REPORT`.
 - Ảnh tư liệu TTXVN được lưu cục bộ; mỗi hiện vật có caption, credit và liên kết bài nguồn.
 - Nội dung lịch sử đối chiếu `VNR202-2019.pdf`, trọng tâm PDF tr. 141–156, 166–167 và 196; mã kiểm chứng SV-01 đến SV-17.
-- Màn hình máy tính dùng `tank.png`; âm thanh là bản ghi chính thức Quốc ca Việt Nam, “Tiến quân ca”.
+- Màn hình máy tính là desktop tương tác mở bằng phím `E`; nhạc nền là “Hello Vietnam” từ tệp được chủ dự án cung cấp và xác nhận quyền sử dụng.
 - Chế độ tham quan trực tuyến đồng bộ vị trí và hướng di chuyển giữa các khách trong cùng phòng; khách khác hiện thành nhân vật đất sét trắng được dựng bằng hình học Three.js.
 - Không sử dụng ảnh tạo bởi AI.
 
@@ -25,6 +25,8 @@ Nhảy: `Space`
 Góc nhìn: giữ và kéo chuột phải
 
 Tương tác hiện vật: chuột trái
+
+Sử dụng máy tính: đứng gần màn hình và nhấn `E`; nhấn `Esc` để thoát
 
 ## Tham quan cùng nhau
 

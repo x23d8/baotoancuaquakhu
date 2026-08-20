@@ -42,6 +42,7 @@ export default class UI {
 		chat_form: HTMLFormElement;
 		chat_input: HTMLInputElement;
 		chat_unread: HTMLElement;
+		computer_prompt: HTMLElement;
 	};
 
 	constructor() {
@@ -81,7 +82,8 @@ export default class UI {
 			chat_messages: document.querySelector(".chat-messages")!,
 			chat_form: document.querySelector(".chat-form")!,
 			chat_input: document.querySelector(".chat-input")!,
-			chat_unread: document.querySelector(".chat-unread")!
+			chat_unread: document.querySelector(".chat-unread")!,
+			computer_prompt: document.querySelector(".computer-prompt")!
 		};
 
 		document.body.addEventListener("click", this.handleClick.bind(this));
@@ -292,6 +294,14 @@ export default class UI {
 		this.doms.multiplayer_presence.title = state === "online"
 			? `${visitors} người đang cùng tham quan phòng này`
 			: labels[state];
+	}
+
+	updateComputerPrompt(visible: boolean, interacting: boolean) {
+		this.doms.computer_prompt.classList.toggle("display-none", !visible);
+		const key = this.doms.computer_prompt.querySelector("kbd");
+		const label = this.doms.computer_prompt.querySelector("span");
+		if (key) key.textContent = interacting ? "ESC" : "E";
+		if (label) label.textContent = interacting ? "Thoát khỏi máy tính" : "Sử dụng máy tính";
 	}
 
 	appendChatMessage(name: string, text: string, isSelf = false, sentAt = Date.now()) {
