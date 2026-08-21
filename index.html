@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#5b1717" />
+    <meta name="description" content="Bảo tàng số về công nghiệp hóa, hiện đại hóa và hội nhập của Việt Nam giai đoạn 1996–2006." />
+    <title>Bảo tàng Dòng chảy Đổi mới · 1996–2006</title>
+    <script type="module" crossorigin src="./assets/index-CQW715wa.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B3N_szqA.css">
+  </head>
+  <body>
+    <div class="loading-media" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="auto" tabindex="-1">
+        <source src="./loading-background.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="loading" role="status" aria-live="polite">
+      <img class="national-flag loading-flag" src="./quoc-ky-viet-nam.svg" alt="Quốc kỳ nước Cộng hòa xã hội chủ nghĩa Việt Nam" />
+      <p class="loading-flag-label">QUỐC KỲ VIỆT NAM</p>
+      <div class="loading-circle"></div>
+      <p class="progress">Đang mở kho tư liệu…</p>
+    </div>
+
+    <section class="loading-complete display-none" aria-label="Mở đầu bảo tàng">
+      <div class="entry-card">
+        <div class="entry-masthead">
+          <div>
+            <p>Bảo tàng lịch sử số</p>
+            <span>Một không gian trưng bày trực tuyến</span>
+          </div>
+        </div>
+        <div class="entry-copy">
+          <p class="entry-kicker">Một chặng đường đất nước</p>
+          <h1><span>Dòng chảy</span><strong>Đổi mới</strong></h1>
+          <p class="entry-lead">Nhìn lại mười năm Việt Nam bền bỉ kiến thiết, mở cửa và bước ra thế giới qua những tư liệu còn lưu giữ.</p>
+          <p class="entry-period">Giai đoạn 1996 đến 2006</p>
+        </div>
+        <div class="entry-footer">
+          <p class="entry-archive">Tư liệu, ký ức và hiện vật Việt Nam</p>
+          <button class="start" type="button">Vào phòng trưng bày</button>
+        </div>
+      </div>
+    </section>
+
+    <header class="museum-hud">
+      <div class="museum-brand">
+        <img class="national-flag brand-flag" src="./quoc-ky-viet-nam.svg" alt="Quốc kỳ Việt Nam" />
+        <div><b>DÒNG CHẢY ĐỔI MỚI</b><small>Bảo tàng lịch sử số · 1996–2006</small></div>
+      </div>
+      <div class="hud-actions">
+        <div class="multiplayer-presence" data-state="idle" role="status" aria-live="polite" title="Khách đang cùng tham quan">
+          <span class="presence-dot" aria-hidden="true"></span>
+          <span class="presence-label">Chưa kết nối</span>
+        </div>
+        <button class="audio-toggle" type="button" aria-pressed="false">Tắt nhạc</button>
+        <button class="sources-button" type="button">Sổ nguồn</button>
+        <button class="help has-notice" type="button" title="Hướng dẫn và tên hiển thị" aria-label="Hướng dẫn và tên hiển thị, có nội dung mới">?<span class="help-notice" aria-hidden="true">1</span></button>
+      </div>
+    </header>
+
+    <aside class="chat-box display-none" aria-label="Trò chuyện trong phòng">
+      <button class="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-panel">
+        <span>Trò chuyện</span>
+        <span class="chat-unread display-none" aria-label="Tin nhắn chưa đọc">0</span>
+      </button>
+      <section class="chat-panel display-none" id="chat-panel" aria-hidden="true">
+        <header>
+          <div><b>TRÒ CHUYỆN</b><small>Chỉ tồn tại trong phiên hiện tại</small></div>
+          <button class="chat-close" type="button" aria-label="Thu nhỏ trò chuyện">×</button>
+        </header>
+        <div class="chat-messages" role="log" aria-live="polite" aria-relevant="additions">
+          <p class="chat-empty">Chưa có tin nhắn. Hãy chào những người đang cùng tham quan.</p>
+        </div>
+        <form class="chat-form">
+          <label class="sr-only" for="chat-input">Tin nhắn</label>
+          <input id="chat-input" class="chat-input" type="text" maxlength="280" autocomplete="off" placeholder="Nhập tin nhắn…" />
+          <button type="submit">Gửi</button>
+        </form>
+      </section>
+    </aside>
+
+    <div id="css"></div>
+    <div id="app"></div>
+
+    <div class="preview-tooltip hide"></div>
+    <div class="preview-tips hide">NHẤN ĐỂ MỞ HỒ SƠ HIỆN VẬT</div>
+    <div class="computer-prompt display-none" role="status"><kbd>E</kbd><span>Sử dụng máy tính</span></div>
+
+    <div class="boards-info" style="visibility: hidden;" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Hồ sơ hiện vật">
+      <article class="boards-container hide">
+        <button class="close boards-info-close" type="button" aria-label="Đóng hồ sơ">×</button>
+        <div class="content">
+          <section class="artifact-visual">
+            <div class="photo-frame"><img class="artifact-image" src="" alt=""></div>
+            <p class="caption"></p>
+            <p class="credit"></p>
+            <div class="related-images" aria-label="Ảnh liên quan"></div>
+          </section>
+          <section class="info">
+            <div class="stage"></div>
+            <h2 class="title"></h2>
+            <div class="event-meta">
+              <p><small>THỜI GIAN</small><b class="date"></b></p>
+              <p><small>ĐỊA ĐIỂM / BỐI CẢNH</small><b class="location"></b></p>
+            </div>
+            <div class="describe"></div>
+            <div class="citation-block">
+              <span>ĐỐI CHIẾU GIÁO TRÌNH</span>
+              <p class="textbook-source"></p>
+              <p class="claim-id"></p>
+            </div>
+            <div class="external-sources" aria-label="Nguồn trực tuyến chính thống"></div>
+          </section>
+        </div>
+      </article>
+    </div>
+
+    <div class="sources-panel display-none" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Sổ nguồn">
+      <article class="source-book">
+        <button class="sources-panel-close" type="button" aria-label="Đóng sổ nguồn">×</button>
+        <p class="book-kicker">SỔ KIỂM CHỨNG · VNR202-08</p>
+        <h2>Nguồn và nguyên tắc trưng bày</h2>
+        <div class="source-columns">
+          <section>
+            <h3>Nguồn lịch sử chính</h3>
+            <p><b>Giáo trình Lịch sử Đảng Cộng sản Việt Nam (2019)</b>, tệp <code>VNR202-2019.pdf</code>. Phạm vi đối chiếu chính: PDF tr. 141–156, 166–167 và 196.</p>
+            <p>Hồ sơ nhóm: <code>Tong_hop_CNH_HDH_va_Hoi_nhap_1996_2006.docx</code> cùng các phần P2–P6. Mã kiểm chứng SV-01 đến SV-17 nằm trong Source Verification Log.</p>
+          </section>
+          <section>
+            <h3>Nguồn ảnh</h3>
+            <p>Ảnh trưng bày lấy từ kho ảnh TTXVN và các trang thông tin chính thống. Credit và liên kết bài nguồn xuất hiện trong từng hồ sơ hiện vật.</p>
+            <p>Ảnh minh họa bối cảnh luôn được ghi rõ, không được trình bày như ảnh chụp thời điểm ban hành nghị quyết.</p>
+          </section>
+          <section>
+            <h3>Biểu tượng, âm thanh và máy lưu trữ</h3>
+            <p>Quốc kỳ dùng <a href="https://commons.wikimedia.org/wiki/File:Flag_of_Vietnam.svg" target="_blank" rel="noopener noreferrer">tệp vector 900 × 600</a> có metadata dẫn nguồn Chính phủ Việt Nam; hình học được đối chiếu với quy cách tại <a href="https://chinhphu.vn/quoc-ky-quoc-huy-quoc-ca-tuyen-ngon-68378" target="_blank" rel="noopener noreferrer">Cổng Thông tin điện tử Chính phủ</a> và <a href="https://mofa.gov.vn/vi/web/dai-su-quan-tai/gioi-thieu-viet-nam" target="_blank" rel="noopener noreferrer">Bộ Ngoại giao</a>. Không tái dựng bằng chữ hay CSS, không cắt và không bóp méo.</p>
+            <p>Màn mở đầu dùng bản MP4 lưu cục bộ từ <a href="https://www.youtube.com/watch?v=rG3aZznMIm8" target="_blank" rel="noopener noreferrer">video YouTube do nhóm chỉ định</a>; video tắt tiếng, phát lặp và được gỡ khi khách vào bảo tàng.</p>
+            <p>Nhạc nền là “Hello Vietnam”, dùng từ tệp âm thanh do chủ dự án cung cấp và xác nhận có quyền sử dụng; <a href="https://www.youtube.com/watch?v=NCPCoAtCqfc" target="_blank" rel="noopener noreferrer">video tham chiếu ↗</a>.</p>
+            <p>Màn hình máy tính là desktop tương tác: đứng gần máy, nhấn <kbd>E</kbd> để sử dụng, chọn các hồ sơ trên màn hình và nhấn <kbd>Esc</kbd> để trở lại bảo tàng.</p>
+          </section>
+          <section>
+            <h3>Giới hạn diễn giải</h3>
+            <p>Bảo tàng dừng ở tháng 11/2006. Số liệu tăng trưởng phản ánh kết quả giai đoạn, không tự chứng minh quan hệ nhân quả với từng nghị quyết hay từng công trình.</p>
+          </section>
+        </div>
+        <a class="anthem-source" href="https://www.youtube.com/watch?v=NCPCoAtCqfc" target="_blank" rel="noreferrer noopener">Video tham chiếu “Hello Vietnam” ↗</a>
+      </article>
+    </div>
+
+    <div class="operating-intro display-none" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Hướng dẫn tham quan">
+      <article class="guide-card">
+        <button class="operating-intro-close" type="button" aria-label="Đóng hướng dẫn">×</button>
+        <p class="guide-kicker">HƯỚNG DẪN THAM QUAN</p>
+        <h2>Đi xuyên bảo tàng theo thời gian</h2>
+        <form class="visitor-name-form">
+          <div>
+            <label for="visitor-name">Tên hiển thị trong bảo tàng</label>
+            <span>Tên này xuất hiện trên nhân vật và trong trò chuyện.</span>
+          </div>
+          <div class="visitor-name-control">
+            <input id="visitor-name" class="visitor-name-input" type="text" maxlength="24" autocomplete="nickname" placeholder="Ví dụ: Minh Anh" />
+            <button type="submit">Lưu tên</button>
+          </div>
+          <p class="visitor-name-status" role="status" aria-live="polite"></p>
+        </form>
+        <div class="guide-grid">
+          <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><b>Di chuyển</b><span>Di chuyển tự do giữa các cụm ảnh theo thứ tự thời gian.</span></div>
+          <div><span class="mouse-icon">RMB</span><b>Quan sát</b><span>Giữ và kéo chuột phải để đổi hướng nhìn.</span></div>
+          <div><span class="click-icon">LMB</span><b>Mở hiện vật</b><span>Dùng chuột trái để chọn ảnh và mở hồ sơ.</span></div>
+          <div><kbd>E</kbd><b>Dùng máy tính</b><span>Đứng gần màn hình, nhấn E để vào desktop và chọn tệp.</span></div>
+          <div><kbd>Esc</kbd><b>Đóng hồ sơ</b><span>Quay lại không gian tham quan.</span></div>
+        </div>
+        <p class="mobile-guide">Trên điện thoại: xoay ngang màn hình và dùng cần điều khiển ảo.</p>
+      </article>
+    </div>
+
+    <div id="joystick"></div>
+  </body>
+</html>
