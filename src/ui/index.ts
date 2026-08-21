@@ -1,5 +1,5 @@
 import Core from "../core";
-import {ExhibitInfo, ON_ENTER_APP, ON_SEND_CHAT, ON_TOGGLE_AUDIO} from "../Constants";
+import {ExhibitInfo, ON_CHANGE_VISITOR_NAME, ON_ENTER_APP, ON_SEND_CHAT, ON_TOGGLE_AUDIO} from "../Constants";
 
 const normalizeVietnamese = (value: string) => value.normalize("NFC");
 
@@ -43,6 +43,9 @@ export default class UI {
 		chat_input: HTMLInputElement;
 		chat_unread: HTMLElement;
 		computer_prompt: HTMLElement;
+		visitor_name_form: HTMLFormElement;
+		visitor_name_input: HTMLInputElement;
+		visitor_name_status: HTMLElement;
 	};
 
 	constructor() {
@@ -83,12 +86,16 @@ export default class UI {
 			chat_form: document.querySelector(".chat-form")!,
 			chat_input: document.querySelector(".chat-input")!,
 			chat_unread: document.querySelector(".chat-unread")!,
-			computer_prompt: document.querySelector(".computer-prompt")!
+			computer_prompt: document.querySelector(".computer-prompt")!,
+			visitor_name_form: document.querySelector(".visitor-name-form")!,
+			visitor_name_input: document.querySelector(".visitor-name-input")!,
+			visitor_name_status: document.querySelector(".visitor-name-status")!
 		};
 
 		document.body.addEventListener("click", this.handleClick.bind(this));
 		document.addEventListener("keydown", this.handleKeyDown.bind(this));
 		this.doms.chat_form.addEventListener("submit", this.handleChatSubmit.bind(this));
+		this.doms.visitor_name_form.addEventListener("submit", this.handleVisitorNameSubmit.bind(this));
 		this.doms.chat_input.addEventListener("keydown", event => {
 			if (event.key === "Escape") this.toggleChat(false);
 			else event.stopPropagation();
@@ -159,12 +166,28 @@ export default class UI {
 		this.doms.loading_media.remove();
 		this.core.$emit(ON_ENTER_APP);
 		this.doms.chat_box.classList.remove("display-none");
+		this.doms.visitor_name_input.value = sessionStorage.getItem("museum-visitor-name") || "";
 	}
 
 	showHelp() {
+		this.doms.help_btn.classList.remove("has-notice");
+		this.doms.help_btn.setAttribute("aria-label", "Hướng dẫn và tên hiển thị");
 		this.doms.operating_intro.classList.remove("display-none");
 		this.doms.operating_intro.setAttribute("aria-hidden", "false");
 		this.core.control_manage.disabled();
+	}
+
+	private handleVisitorNameSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		const name = this.doms.visitor_name_input.value.replace(/[<>]/g, "").trim().slice(0, 24);
+		if (!name) {
+			this.doms.visitor_name_status.textContent = "Nhập một tên từ 1 đến 24 ký tự.";
+			this.doms.visitor_name_input.focus();
+			return;
+		}
+		this.doms.visitor_name_input.value = name;
+		this.core.$emit(ON_CHANGE_VISITOR_NAME, name);
+		this.doms.visitor_name_status.textContent = `Đã đổi tên thành ${name}.`;
 	}
 
 	hideHelp() {

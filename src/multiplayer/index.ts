@@ -15,13 +15,15 @@ import {joinRoom, type MessageAction, type Room} from "trystero";
 import {createClient, type RealtimeChannel, type SupabaseClient} from "@supabase/supabase-js";
 import Core from "../core";
 import Character from "../character";
-import {ON_SEND_CHAT} from "../Constants";
+import {ON_CHANGE_VISITOR_NAME, ON_SEND_CHAT} from "../Constants";
 
 type PosePayload = Record<string, string | number | boolean>;
 type ChatPayload = Record<string, string>;
 
 type RemoteVisitor = {
 	root: Group;
+	name: string;
+	nameLabel: Sprite;
 	target: Vector3;
 	targetYaw: number;
 	leftArm: Group;
@@ -66,6 +68,7 @@ export default class Multiplayer {
 		this.character = character;
 		this.lastPosition.copy(character.position);
 		this.core.$on(ON_SEND_CHAT, this.handleSendChat.bind(this));
+		this.core.$on(ON_CHANGE_VISITOR_NAME, this.handleChangeVisitorName.bind(this));
 	}
 
 	connect() {
@@ -263,6 +266,15 @@ export default class Multiplayer {
 			this.core.scene.add(visitor.root);
 			this.updateVisitorCount();
 		}
+		const nextName = this.safeName(payload.name);
+		if (nextName !== visitor.name) {
+			visitor.root.remove(visitor.nameLabel);
+			visitor.nameLabel.material.map?.dispose();
+			visitor.nameLabel.material.dispose();
+			visitor.nameLabel = this.createNameLabel(nextName);
+			visitor.name = nextName;
+			visitor.root.add(visitor.nameLabel);
+		}
 		visitor.target.set(x, y - 5, z);
 		visitor.targetYaw = yaw;
 		visitor.moving = payload.moving === true;
@@ -282,6 +294,16 @@ export default class Multiplayer {
 		} else if (this.chatAction) {
 			void this.chatAction.send(payload).catch(() => undefined);
 		}
+	}
+
+	private handleChangeVisitorName([rawName]: [string]) {
+		const name = this.safeName(rawName);
+		this.visitorName = name;
+		sessionStorage.setItem("museum-visitor-name", name);
+		if (this.useCentralRealtime && this.realtimeChannel && this.realtimeSubscribed) {
+			void this.realtimeChannel.track({id: this.clientId, name, onlineAt: Date.now()});
+		}
+		this.sendPose();
 	}
 
 	private receiveChat(peerId: string, payload: ChatPayload) {
@@ -322,7 +344,8 @@ export default class Multiplayer {
 		const rightLeg = this.createLimb(clay, .31, 1.7);
 		rightLeg.position.set(.3, 1.62, 0);
 
-		root.add(body, head, badge, leftArm, rightArm, leftLeg, rightLeg, this.createNameLabel(name));
+		const nameLabel = this.createNameLabel(name);
+		root.add(body, head, badge, leftArm, rightArm, leftLeg, rightLeg, nameLabel);
 		root.traverse(object => {
 			if (object instanceof Mesh) {
 				object.castShadow = true;
@@ -332,6 +355,8 @@ export default class Multiplayer {
 
 		return {
 			root,
+			name,
+			nameLabel,
 			target: new Vector3(),
 			targetYaw: 0,
 			leftArm,

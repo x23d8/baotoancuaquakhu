@@ -71,16 +71,19 @@ export default class Css3DRenderer {
 		this.iframe = document.createElement("iframe");
 		this.iframe.src = IFRAME_SRC;
 		this.iframe.title = "Máy tính lưu trữ tương tác của bảo tàng";
-		this.iframe.style.width = "1200px";
-		this.iframe.style.height = "900px";
+		this.iframe.style.width = "1024px";
+		this.iframe.style.height = "768px";
 		this.iframe.style.boxSizing = "border-box";
+		this.iframe.style.border = "0";
 		this.iframe.style.opacity = "1";
 		this.iframe.style.pointerEvents = "none";
 
 		const object = new CSS3DObject(this.iframe);
 		object.position.copy(mesh.position);
 		object.rotation.copy(mesh.rotation);
-		object.scale.set(0.002, 0.002, 0.002);
+		// Keep the 4:3 XP desktop completely inside the CRT glass instead of
+		// projecting a larger iframe across the monitor bezel.
+		object.scale.set(0.00145, 0.00145, 0.00145);
 		this.css_scene.add(object);
 	}
 

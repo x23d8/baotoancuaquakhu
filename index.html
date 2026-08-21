@@ -25,21 +25,22 @@
 
     <section class="loading-complete display-none" aria-label="Mở đầu bảo tàng">
       <div class="entry-card">
-        <div class="entry-kicker">BẢO TÀNG SỐ · VNR202-08</div>
-        <img class="national-flag entry-flag" src="/quoc-ky-viet-nam.svg" alt="Quốc kỳ nước Cộng hòa xã hội chủ nghĩa Việt Nam" />
-        <h1>DÒNG CHẢY<br><span>ĐỔI MỚI</span></h1>
-        <p class="entry-years">1996 <i>→</i> 2006</p>
-        <p class="entry-lead">Từ đẩy mạnh công nghiệp hóa, hiện đại hóa đến định hình thể chế, mở rộng nguồn lực và chủ động, tích cực hội nhập kinh tế quốc tế.</p>
-        <div class="entry-route" aria-label="Ba lớp chuyển dịch của bảo tàng">
-          <div><b>01</b><span>1996–2000</span><small>Xây năng lực</small></div>
-          <i>→</i>
-          <div><b>02</b><span>2001–2005</span><small>Định hình thể chế</small></div>
-          <i>→</i>
-          <div><b>03</b><span>2006</span><small>Hội nhập chiều sâu</small></div>
+        <div class="entry-masthead">
+          <div>
+            <p>Bảo tàng lịch sử số</p>
+            <span>Một không gian trưng bày trực tuyến</span>
+          </div>
         </div>
-        <p class="entry-note">WASD để di chuyển · Giữ chuột phải để quan sát · Chuột trái mở hiện vật · E dùng máy tính</p>
-        <p class="entry-media-credit">Nền mở đầu: <a href="https://www.youtube.com/watch?v=rG3aZznMIm8" target="_blank" rel="noopener noreferrer">video theo yêu cầu</a> · Quốc kỳ: <a href="https://chinhphu.vn/quoc-ky-quoc-huy-quoc-ca-tuyen-ngon-68378" target="_blank" rel="noopener noreferrer">Cổng Thông tin điện tử Chính phủ</a></p>
-        <button class="start" type="button">BƯỚC VÀO BẢO TÀNG <span>→</span></button>
+        <div class="entry-copy">
+          <p class="entry-kicker">Một chặng đường đất nước</p>
+          <h1><span>Dòng chảy</span><strong>Đổi mới</strong></h1>
+          <p class="entry-lead">Nhìn lại mười năm Việt Nam bền bỉ kiến thiết, mở cửa và bước ra thế giới qua những tư liệu còn lưu giữ.</p>
+          <p class="entry-period">Giai đoạn 1996 đến 2006</p>
+        </div>
+        <div class="entry-footer">
+          <p class="entry-archive">Tư liệu, ký ức và hiện vật Việt Nam</p>
+          <button class="start" type="button">Vào phòng trưng bày</button>
+        </div>
       </div>
     </section>
 
@@ -55,7 +56,7 @@
         </div>
         <button class="audio-toggle" type="button" aria-pressed="false">Tắt nhạc</button>
         <button class="sources-button" type="button">Sổ nguồn</button>
-        <button class="help" type="button" title="Hướng dẫn">?</button>
+        <button class="help has-notice" type="button" title="Hướng dẫn và tên hiển thị" aria-label="Hướng dẫn và tên hiển thị, có nội dung mới">?<span class="help-notice" aria-hidden="true">1</span></button>
       </div>
     </header>
 
@@ -153,6 +154,17 @@
         <button class="operating-intro-close" type="button" aria-label="Đóng hướng dẫn">×</button>
         <p class="guide-kicker">HƯỚNG DẪN THAM QUAN</p>
         <h2>Đi xuyên bảo tàng theo thời gian</h2>
+        <form class="visitor-name-form">
+          <div>
+            <label for="visitor-name">Tên hiển thị trong bảo tàng</label>
+            <span>Tên này xuất hiện trên nhân vật và trong trò chuyện.</span>
+          </div>
+          <div class="visitor-name-control">
+            <input id="visitor-name" class="visitor-name-input" type="text" maxlength="24" autocomplete="nickname" placeholder="Ví dụ: Minh Anh" />
+            <button type="submit">Lưu tên</button>
+          </div>
+          <p class="visitor-name-status" role="status" aria-live="polite"></p>
+        </form>
         <div class="guide-grid">
           <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><b>Di chuyển</b><span>Di chuyển tự do giữa các cụm ảnh theo thứ tự thời gian.</span></div>
           <div><span class="mouse-icon">RMB</span><b>Quan sát</b><span>Giữ và kéo chuột phải để đổi hướng nhìn.</span></div>

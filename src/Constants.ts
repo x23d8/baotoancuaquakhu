@@ -218,14 +218,14 @@ export const EXHIBITS: ExhibitInfo[] = [
 		order: 10,
 		period: "11/2006",
 		stage: "P6 · Hội nhập đa phương",
-		title: "WTO và APEC 14: điểm kết của hành trình",
+		title: "WTO và APEC 14: Bước ngoặt hội nhập đa phương",
 		date: "7–19/11/2006",
 		location: "Geneva và Hà Nội",
 		image: image("10-wto.jpg"),
 		imageAlt: "Lễ trao văn kiện kết nạp Việt Nam vào WTO ngày 7 tháng 11 năm 2006",
 		imageCaption: "Tổng Giám đốc WTO Pascal Lamy trao văn kiện kết nạp Việt Nam cho Bộ trưởng Thương mại Trương Đình Tuyển, ngày 7/11/2006 tại Geneva.",
 		imageCredit: "Ảnh: AFP/TTXVN phát",
-		describe: `<p>Tháng 11/2006, sau hơn 10 năm đàm phán, Việt Nam được kết nạp là thành viên thứ 150 của WTO. Cũng trong tháng này, Việt Nam tổ chức thành công Tuần lễ cấp cao APEC lần thứ 14 tại Hà Nội.</p><p class="interpretation"><b>Ý nghĩa trong phạm vi đề tài:</b> hai sự kiện là điểm kết phù hợp cho tiến trình chuyển từ mở rộng quan hệ quốc tế sang hội nhập kinh tế quốc tế sâu hơn và đa phương hơn.</p><p class="interpretation"><b>Giới hạn:</b> bảo tàng dừng ở tháng 11/2006, không dùng các kết quả 2007–2010 làm nội dung chính.</p>`,
+		describe: `<p>Tháng 11/2006, sau hơn 10 năm đàm phán, Việt Nam được kết nạp là thành viên thứ 150 của WTO. Cũng trong tháng này, Việt Nam tổ chức thành công Tuần lễ cấp cao APEC lần thứ 14 tại Hà Nội.</p><p class="interpretation"><b>Ý nghĩa trong phạm vi đề tài:</b> hai sự kiện là dấu mốc cho tiến trình chuyển từ mở rộng quan hệ quốc tế sang hội nhập kinh tế quốc tế sâu hơn và đa phương hơn.</p><p class="interpretation"><b>Giới hạn:</b> bảo tàng dừng ở tháng 11/2006, không dùng các kết quả 2007–2010 làm nội dung chính.</p>`,
 		textbook: "Giáo trình, PDF tr. 166–167; trang in 165–166.",
 		claimIds: "SV-16, SV-17",
 		sources: [
@@ -262,3 +262,4 @@ export const ON_KEY_UP = "on-key-up";
 export const ON_ENTER_APP = "on-enter-app";
 export const ON_TOGGLE_AUDIO = "on-toggle-audio";
 export const ON_SEND_CHAT = "on-send-chat";
+export const ON_CHANGE_VISITOR_NAME = "on-change-visitor-name";

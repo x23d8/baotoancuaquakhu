@@ -7,7 +7,9 @@
 	--paper-deep: #d9c39b;
 	--ink: #241a13;
 	--smoke: rgba(23, 12, 8, .82);
-	--font-vietnamese: "Segoe UI", Tahoma, Arial, sans-serif;
+	--font-vietnamese: Tahoma, Verdana, sans-serif;
+	--font-display: "Trebuchet MS", Tahoma, sans-serif;
+	--font-document: Tahoma, Verdana, sans-serif;
 }
 
 .display-none { display: none !important; }
@@ -47,8 +49,8 @@ input,
 	position: absolute;
 	inset: 0;
 	background:
-		linear-gradient(180deg, rgba(18, 7, 6, .48), rgba(23, 8, 7, .64)),
-		radial-gradient(circle at 50% 42%, transparent 16%, rgba(11, 5, 4, .5) 78%);
+		linear-gradient(90deg, rgba(17, 7, 7, .78) 0%, rgba(17, 7, 7, .44) 45%, rgba(17, 7, 7, .08) 78%),
+		linear-gradient(0deg, rgba(12, 4, 4, .45), transparent 58%);
 }
 
 .loading,
@@ -84,41 +86,42 @@ input,
 .loading .progress { margin-top: 16px; color: #f0e2bf; letter-spacing: .08em; text-shadow: 0 2px 12px #000; }
 
 .loading-complete {
-	justify-content: flex-start;
+	justify-content: center;
+	align-items: flex-start;
 	overflow: auto;
-	padding: clamp(18px, 3vw, 42px) 24px;
+	padding: clamp(28px, 6vw, 88px);
+	background: transparent;
 }
-.loading-complete::before,
-.loading-complete::after {
-	content: "";
-	position: fixed;
-	inset: 18px;
-	pointer-events: none;
-	border: 1px solid rgba(214, 173, 79, .5);
+.loading-complete::before {
+	display: none;
 }
-.loading-complete::after { inset: 24px; border-color: rgba(214, 173, 79, .16); }
+.loading-complete:not(.display-none) ~ .museum-hud { visibility: hidden; }
 
-.entry-card { width: min(1480px, calc(100vw - 48px)); margin: auto 0; text-align: center; position: relative; padding: clamp(24px, 3vw, 42px) clamp(22px, 4vw, 64px); background: rgba(22, 9, 8, .48); border: 1px solid rgba(214, 173, 79, .18); box-shadow: 0 28px 90px rgba(0, 0, 0, .38); backdrop-filter: blur(2px); }
-.entry-kicker { color: var(--museum-gold); font: 700 .75rem/1.2 var(--font-vietnamese); letter-spacing: .32em; }
-.entry-flag { width: min(136px, 34vw); margin: 18px auto 18px; box-shadow: 0 14px 42px rgba(0, 0, 0, .4); }
-.entry-card h1 { margin: 0; color: #fff7df; font: 800 clamp(2.8rem, min(6.4vw, 11vh), 7rem)/.9 var(--font-vietnamese); letter-spacing: -.045em; }
-.entry-card h1 span { color: var(--museum-gold-pale); }
-.entry-years { display: flex; justify-content: center; align-items: center; gap: 18px; margin: 22px 0 16px; color: var(--museum-gold-pale); font: 700 clamp(1.15rem, 2vw, 1.45rem)/1 var(--font-vietnamese); letter-spacing: .28em; }
-.entry-years i { color: #9b4b40; font-style: normal; }
-.entry-lead { width: min(1220px, 100%); max-width: none; margin: 0 auto 28px; color: #dfd2b5; font: 1.05rem/1.7 var(--font-vietnamese); }
-.entry-route { display: flex; justify-content: center; align-items: center; gap: 16px; width: min(1160px, 100%); margin: 0 auto 24px; }
-.entry-route > i { color: var(--museum-gold); font: 2rem var(--font-vietnamese); }
-.entry-route > div { min-width: 180px; flex: 1; padding: 13px 16px; border-top: 1px solid var(--museum-gold); border-bottom: 1px solid rgba(214, 173, 79, .35); background: rgba(255, 255, 255, .025); }
-.entry-route b { float: left; margin-right: 10px; color: #9e4b3f; font: 700 1.7rem var(--font-vietnamese); }
-.entry-route span, .entry-route small { display: block; text-align: left; }
-.entry-route span { color: #fff7df; font-weight: 700; }
-.entry-route small { margin-top: 3px; color: #c7b890; }
-.entry-note { margin: 0 auto 20px; color: #a99a7a; font-size: .82rem; }
-.entry-media-credit { margin: -8px auto 18px; color: #b9aa88; font-size: .72rem; }
-.entry-media-credit a { color: #eed27d; text-underline-offset: 3px; }
-.start { min-width: min(420px, 90vw); border: 1px solid var(--museum-gold); padding: 15px 25px; color: #27140e; background: var(--museum-gold-pale); cursor: pointer; font: 800 .9rem/1 var(--font-vietnamese); letter-spacing: .12em; transition: .2s ease; }
-.start:hover { background: #fff3c6; transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0, 0, 0, .35); }
-.start span { margin-left: 16px; font-size: 1.4em; }
+.entry-card {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	width: min(720px, 53vw);
+	min-height: min(720px, calc(100vh - clamp(56px, 12vw, 176px)));
+	padding: clamp(30px, 4vw, 58px);
+	color: #fff8e9;
+	background: linear-gradient(135deg, rgba(24, 6, 6, .5), rgba(24, 6, 6, .27));
+	box-shadow: 0 28px 80px rgba(0, 0, 0, .18);
+	backdrop-filter: blur(16px) saturate(.78);
+	-webkit-backdrop-filter: blur(16px) saturate(.78);
+}
+.entry-masthead p { margin: 0 0 7px; color: #fff8e9; font: 700 .92rem/1.2 var(--font-display); letter-spacing: .035em; text-transform: uppercase; }
+.entry-masthead span { color: rgba(255, 242, 213, .7); font: .76rem/1.4 var(--font-vietnamese); }
+.entry-copy { align-self: center; padding: clamp(52px, 8vh, 96px) 0 38px; }
+.entry-kicker { margin: 0 0 16px; color: #f4d65f; font: 700 .78rem/1.3 var(--font-vietnamese); letter-spacing: .08em; }
+.entry-card h1 { margin: 0; color: #fff8e9; font: 700 clamp(3.6rem, 6.3vw, 6.2rem)/.91 var(--font-display); letter-spacing: -.045em; }
+.entry-card h1 span, .entry-card h1 strong { display: block; }
+.entry-card h1 strong { color: #f4d65f; font-weight: 700; }
+.entry-lead { width: min(560px, 100%); margin: 28px 0 0; color: rgba(255, 248, 233, .82); font: clamp(.95rem, 1.25vw, 1.08rem)/1.7 var(--font-vietnamese); }
+.entry-period { margin: 25px 0 0; color: #f4d65f; font: 700 .78rem/1.4 var(--font-vietnamese); }
+.entry-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.entry-archive { margin: 0; color: rgba(255, 242, 213, .58); font: .72rem/1.4 var(--font-vietnamese); }
+.start { min-height: 48px; border: 0; border-radius: 3px; padding: 0 22px; color: #501310; background: #f4d65f; cursor: pointer; font: 700 .82rem/1 var(--font-vietnamese); transition: background .18s ease, transform .18s ease; }
+.start:hover { background: #fff0a1; transform: translateY(-2px); }
 
 .museum-hud {
 	position: fixed;
@@ -161,6 +164,9 @@ input,
 .hud-actions button { height: 38px; border: 1px solid rgba(214, 173, 79, .62); padding: 0 13px; color: #f4e8c9; background: rgba(48, 11, 13, .88); cursor: pointer; font: 700 .72rem var(--font-vietnamese); letter-spacing: .06em; backdrop-filter: blur(8px); }
 .hud-actions button:hover { color: #2a120c; background: var(--museum-gold-pale); }
 .hud-actions .help { position: static; width: 38px; padding: 0; border-radius: 50%; font-size: 1rem; }
+.hud-actions .help.has-notice { position: relative; border-color: #efc064; }
+.help-notice { position: absolute; right: -5px; top: -6px; display: none; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border: 2px solid #2f0b0d; border-radius: 50%; color: #fff; background: #d42924; font: 800 .58rem/1 var(--font-vietnamese); box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.help.has-notice .help-notice { display: grid; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .chat-box { position: fixed; z-index: 45; right: 18px; bottom: 18px; color: #f7ebcd; font-family: var(--font-vietnamese); }
@@ -291,6 +297,16 @@ input,
 .anthem-source { display: inline-block; margin-top: 18px; }
 
 .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.visitor-name-form { display: grid; grid-template-columns: 1fr minmax(280px, .8fr); gap: 10px 22px; align-items: end; margin: 0 0 24px; padding: 17px 18px; border-left: 5px solid #9c2825; background: #d9c9a8; }
+.visitor-name-form label, .visitor-name-form span { display: block; }
+.visitor-name-form label { color: #481213; font: 800 .94rem var(--font-vietnamese); }
+.visitor-name-form span { margin-top: 5px; color: #6d5d49; font: .76rem/1.4 var(--font-vietnamese); }
+.visitor-name-control { display: grid; grid-template-columns: 1fr auto; }
+.visitor-name-input { min-width: 0; height: 42px; border: 1px solid #8c7958; border-right: 0; padding: 0 11px; color: #2c2118; background: #f7efd9; outline: none; }
+.visitor-name-input:focus { box-shadow: inset 0 0 0 2px #a12a27; }
+.visitor-name-control button { height: 42px; border: 0; padding: 0 15px; color: #fff4d4; background: #72191b; cursor: pointer; font-weight: 800; }
+.visitor-name-control button:hover { background: #962522; }
+.visitor-name-status { grid-column: 1 / -1; min-height: 1.2em; margin: 0; color: #8e201e; font: 700 .76rem var(--font-vietnamese); }
 .guide-grid > div { display: grid; grid-template-columns: 84px 1fr; gap: 6px 14px; align-items: center; padding: 18px; border: 1px solid #bda169; }
 .guide-grid > div > :first-child { grid-row: 1 / 3; }
 .guide-grid b { color: #591518; font: 700 1rem var(--font-vietnamese); }
@@ -329,41 +345,38 @@ kbd { display: inline-grid; place-items: center; min-width: 28px; height: 28px; 
 
 @media (max-height: 780px) and (min-width: 561px) {
 	.loading-complete { padding-top: 12px; padding-bottom: 12px; }
-	.entry-card { width: min(1480px, calc(100vw - 36px)); padding-top: 16px; padding-bottom: 16px; }
-	.entry-kicker { font-size: .65rem; }
-	.entry-flag { width: 82px; margin-top: 8px; margin-bottom: 8px; }
-	.entry-card h1 { font-size: clamp(2.5rem, 9vh, 4.6rem); line-height: .88; }
-	.entry-years { margin-top: 12px; margin-bottom: 10px; }
-	.entry-lead { margin-bottom: 13px; font-size: .9rem; line-height: 1.45; }
-	.entry-route { margin-bottom: 12px; }
-	.entry-route > div { padding-top: 8px; padding-bottom: 8px; }
-	.entry-route b { font-size: 1.35rem; }
-	.entry-route small { font-size: .7rem; }
-	.entry-note { margin-bottom: 10px; font-size: .72rem; }
-	.entry-media-credit { margin-top: -3px; margin-bottom: 10px; font-size: .64rem; }
-	.start { padding-top: 11px; padding-bottom: 11px; }
+	.entry-card { min-height: calc(100vh - 24px); padding: 24px 34px; }
+	.entry-copy { padding: 28px 0 22px; }
+	.entry-card h1 { font-size: clamp(3rem, 10vh, 4.8rem); }
+	.entry-lead { margin-top: 18px; font-size: .92rem; }
+	.entry-period { margin-top: 18px; }
 }
 
 @media (max-width: 900px) {
-	.entry-route { gap: 6px; }
-	.entry-route > div { min-width: 0; flex: 1; padding: 10px 8px; }
-	.entry-route > i { font-size: 1rem; }
-	.entry-route b { display: none; }
-	.entry-route span, .entry-route small { text-align: center; }
+	.loading-media video { object-position: 62% center; }
+	.loading-complete { align-items: stretch; padding: 24px; }
+	.entry-card { width: min(650px, 72vw); }
 	.museum-brand small, .audio-toggle { display: none; }
 	.boards-info, .sources-panel, .operating-intro { padding: 10px; }
 	.boards-container { width: 98vw; height: 94vh; padding: 16px 10px; }
 	.boards-container .content { grid-template-columns: 1fr; gap: 20px; padding: 34px 6px 10px; }
 	.info { padding: 0 4px 24px; }
 	.source-columns, .guide-grid { grid-template-columns: 1fr; }
+	.visitor-name-form { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
-	.loading-complete { padding: 8px; }
-	.entry-card { width: calc(100vw - 16px); margin: auto 0; padding: 30px 12px 80px; }
-	.entry-lead { font-size: .9rem; }
-	.entry-route small { display: none; }
-	.entry-note { max-width: 320px; }
+	.loading-media video { object-position: 66% center; }
+	.loading-media::after { background: linear-gradient(0deg, rgba(13, 4, 4, .7), rgba(13, 4, 4, .2)); }
+	.loading-complete { justify-content: flex-end; padding: 12px; }
+	.entry-card { width: 100%; min-height: min(610px, calc(100vh - 24px)); padding: 26px 22px; background: rgba(27, 8, 8, .45); box-shadow: none; backdrop-filter: blur(12px) saturate(.8); }
+	.entry-copy { padding: 34px 0 28px; }
+	.entry-card h1 { font-size: clamp(3rem, 15vw, 4.35rem); }
+	.entry-lead { width: 100%; margin-top: 20px; font-size: .86rem; line-height: 1.6; }
+	.entry-period { margin-top: 20px; }
+	.entry-footer { align-items: flex-end; }
+	.entry-archive { display: none; }
+	.start { margin-left: auto; }
 	.museum-hud { top: 8px; left: 8px; right: 8px; }
 	.brand-flag { width: 39px; }
 	.museum-brand b { font-size: .65rem; }
@@ -377,6 +390,9 @@ kbd { display: inline-grid; place-items: center; min-width: 28px; height: 28px; 
 	.preview-tips { bottom: 28px; }
 	.event-meta { grid-template-columns: 1fr; }
 	.title { font-size: 2rem; }
+	.visitor-name-form { padding: 14px; }
+	.visitor-name-control { grid-template-columns: 1fr; gap: 8px; }
+	.visitor-name-input { border-right: 1px solid #8c7958; }
 }
 
 @media (orientation: landscape) { #joystick { left: 6%; } }
