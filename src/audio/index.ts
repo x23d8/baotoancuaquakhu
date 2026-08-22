@@ -7,12 +7,18 @@ export default class Audio {
 	private audio_mesh: Mesh | undefined;
 	private positional_audio: PositionalAudio | undefined;
 	private is_muted = false;
+	private load_promise: Promise<void> | undefined;
 
 	constructor() {
 		this.core = new Core();
 	}
 
-	async createAudio() {
+	createAudio() {
+		if (!this.load_promise) this.load_promise = this._createAudio();
+		return this.load_promise;
+	}
+
+	private async _createAudio() {
 		this.audio_mesh = new Mesh(new PlaneGeometry(1, 1), new MeshBasicMaterial({color: 0xff0000}));
 		this.audio_mesh.position.set(-15.9, 4.49, 36.42);
 		this.audio_mesh.visible = false;
@@ -26,12 +32,10 @@ export default class Audio {
 
 		const buffer = await this.core.loader.audio_loader.loadAsync(AUDIO_URL);
 		this.positional_audio.setBuffer(buffer);
-		this.positional_audio.setVolume(0.45);
+		this.positional_audio.setVolume(this.is_muted ? 0 : 0.45);
 		this.positional_audio.setRefDistance(8);
 		this.positional_audio.setDirectionalCone(180, 230, 0.5);
 		this.positional_audio.setLoop(true);
-
-		return Promise.resolve();
 	}
 
 	playAudio() {

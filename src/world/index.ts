@@ -48,18 +48,24 @@ export default class World {
 	/*
 	* Callback after entering the gallery
 	* */
-	private _onEnterApp() {
-		this.audio.playAudio();
+	private async _onEnterApp() {
 		// Enable keyboard controls only after entering
 		this.core.control_manage.enabled();
 		this.multiplayer.connect();
+
+		// Loading and decoding the soundtrack is intentionally deferred until
+		// after entry so it cannot compete with the opening video.
+		try {
+			await this.audio.createAudio();
+			this.audio.playAudio();
+		} catch (error) {
+			console.warn("Unable to load the museum soundtrack.", error);
+		}
 	}
 
-	private async _onLoadModelFinish() {
-		// Load the audio after the scene models finish loading
-		await this.audio.createAudio();
-
-		// Remove the loading UI and show the entry confirmation after the audio loads
+	private _onLoadModelFinish() {
+		// The entry screen can appear as soon as the 3D gallery is ready. Audio
+		// is loaded later in response to the visitor's entry gesture.
 		this.core.ui.removeLoading();
 		this.core.ui.showLoadingConfirm();
 

@@ -5,6 +5,7 @@ import Loader from "../loader";
 import ControlManage from "../controlManage";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import UI from "../ui";
+import {ON_ENTER_APP} from "../Constants";
 
 let instance: Core | null = null;
 
@@ -19,6 +20,7 @@ export default class Core extends Emitter {
 	control_manage!: ControlManage;
 	loader!: Loader;
 	world!: World;
+	private has_entered_app = false;
 
 	constructor() {
 		super();
@@ -44,6 +46,9 @@ export default class Core extends Emitter {
 		this._initCamera();
 		this._initRenderer();
 		this._initResponsiveResize();
+		this.$on(ON_ENTER_APP, () => {
+			this.has_entered_app = true;
+		});
 
 		this.ui = new UI();
 		this.control_manage = new ControlManage();
@@ -53,6 +58,10 @@ export default class Core extends Emitter {
 
 	render() {
 		this.renderer.setAnimationLoop(() => {
+			// Let the browser dedicate its GPU budget to the opening video until
+			// the visitor explicitly enters the 3D gallery.
+			if (!this.has_entered_app) return;
+
 			this.renderer.render(this.scene, this.camera);
 			const delta_time = Math.min(0.05, this.clock.getDelta());
 			this.world.update(delta_time);
@@ -91,7 +100,7 @@ export default class Core extends Emitter {
 			this.camera.aspect = window.innerWidth / window.innerHeight;
 			this.camera.updateProjectionMatrix();
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			this.renderer.setPixelRatio(window.devicePixelRatio);
+			this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 		});
 	}
 }
