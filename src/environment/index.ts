@@ -1,6 +1,6 @@
 import Core from "../core";
 import Loader from "../loader";
-import {BAMBOO_FURNITURE_URL, COLLISION_SCENE_URL, EXHIBITS, EXHIBITS_BY_SLOT, ON_LOAD_MODEL_FINISH, ON_LOAD_PROGRESS, STATIC_SCENE_URL} from "../Constants";
+import {BAMBOO_FURNITURE_URL, COLLISION_SCENE_URL, EXHIBITS, EXHIBITS_BY_SLOT, ON_LOAD_MODEL_FINISH, ON_LOAD_PROGRESS, STATIC_SCENE_URL, type ExhibitInfo} from "../Constants";
 import {
 	Box3,
 	CanvasTexture,
@@ -52,31 +52,98 @@ export default class Environment {
 	}
 
 	private async _loadBoardsTexture(): Promise<void> {
+		if (document.fonts) {
+			await Promise.allSettled([
+				document.fonts.load("48px 'Museum Letterpress'"),
+				document.fonts.load("48px 'Museum Hand'"),
+			]);
+		}
+
 		for (const exhibit of EXHIBITS) {
 			const source_texture = await this.loader.texture_loader.loadAsync(exhibit.image);
-			this.texture_boards[exhibit.slot] = this._createExhibitTexture(source_texture, exhibit.period, exhibit.order);
+			this.texture_boards[exhibit.slot] = this._createExhibitTexture(source_texture, exhibit);
 		}
 
 		return Promise.resolve();
 	}
 
-	private _createExhibitTexture(source: Texture, period: string, order: number): Texture {
+	private _wrapCanvasText(context: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines: number) {
+		const words = text.normalize("NFC").split(/\s+/);
+		const lines: string[] = [];
+		let line = "";
+
+		for (const word of words) {
+			const candidate = line ? `${line} ${word}` : word;
+			if (line && context.measureText(candidate).width > maxWidth) {
+				lines.push(line);
+				line = word;
+			} else {
+				line = candidate;
+			}
+		}
+		if (line) lines.push(line);
+
+		if (lines.length > maxLines) {
+			lines.length = maxLines;
+			let lastLine = lines[maxLines - 1];
+			while (lastLine && context.measureText(`${lastLine}…`).width > maxWidth) {
+				lastLine = lastLine.slice(0, -1).trimEnd();
+			}
+			lines[maxLines - 1] = `${lastLine}…`;
+		}
+
+		return lines;
+	}
+
+	private _createExhibitTexture(source: Texture, exhibit: ExhibitInfo): Texture {
 		const canvas = document.createElement("canvas");
 		canvas.width = 1200;
 		canvas.height = 1200;
 		const context = canvas.getContext("2d")!;
 		const source_image = source.image as HTMLImageElement;
 
-		context.fillStyle = "#ead9b9";
+		context.fillStyle = "#e5ddc4";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.fillStyle = "#5b1717";
-		context.fillRect(34, 34, 1132, 1132);
-		context.fillStyle = "#d1a84b";
-		context.fillRect(54, 54, 1092, 1092);
-		context.fillStyle = "#15110d";
-		context.fillRect(68, 68, 1064, 860);
+		for (let index = 0; index < 210; index++) {
+			const x = (index * 83) % canvas.width;
+			const y = (index * 137) % canvas.height;
+			context.fillStyle = index % 3 === 0 ? "rgba(118, 86, 56, .08)" : "rgba(255, 255, 255, .12)";
+			context.fillRect(x, y, 2 + (index % 5), 1);
+		}
 
-		const frame = {x: 76, y: 76, width: 1048, height: 844};
+		context.strokeStyle = "#8f2423";
+		context.lineWidth = 8;
+		context.strokeRect(26, 26, 1148, 1148);
+		context.strokeStyle = "rgba(40, 32, 24, .8)";
+		context.lineWidth = 2;
+		context.strokeRect(42, 42, 1116, 1116);
+
+		context.fillStyle = "#a22b28";
+		context.fillRect(44, 44, 1112, 132);
+		context.fillStyle = "#f4edd8";
+		context.font = "900 62px 'Times New Roman', Georgia, serif";
+		context.textAlign = "left";
+		context.fillText("DÒNG CHẢY ĐỔI MỚI".normalize("NFC"), 70, 128);
+		context.font = "36px 'Museum Letterpress', Impact, sans-serif";
+		context.textAlign = "right";
+		context.fillText(`1996 · ${String(exhibit.order).padStart(2, "0")}`, 1124, 126);
+
+		context.fillStyle = "#241f19";
+		context.font = "30px 'Times New Roman', Georgia, serif";
+		context.textAlign = "left";
+		context.fillText(exhibit.stage.normalize("NFC"), 56, 220);
+		context.font = "46px 'Museum Letterpress', Impact, sans-serif";
+		context.textAlign = "right";
+		context.fillStyle = "#9b2523";
+		context.fillText(exhibit.period.normalize("NFC"), 1140, 224);
+		context.strokeStyle = "#2b251d";
+		context.lineWidth = 3;
+		context.beginPath();
+		context.moveTo(54, 244);
+		context.lineTo(1146, 244);
+		context.stroke();
+
+		const frame = {x: 56, y: 274, width: 704, height: 600};
 		const source_ratio = source_image.width / source_image.height;
 		const frame_ratio = frame.width / frame.height;
 		let sx = 0;
@@ -90,25 +157,51 @@ export default class Environment {
 			sh = source_image.width / frame_ratio;
 			sy = (source_image.height - sh) / 2;
 		}
-		context.filter = "sepia(.24) contrast(1.06) saturate(.82)";
+		context.fillStyle = "#201b16";
+		context.fillRect(frame.x - 8, frame.y - 8, frame.width + 16, frame.height + 16);
+		context.filter = "grayscale(.78) sepia(.28) contrast(1.12) brightness(.92)";
 		context.drawImage(source_image, sx, sy, sw, sh, frame.x, frame.y, frame.width, frame.height);
 		context.filter = "none";
-		context.fillStyle = "rgba(74, 18, 18, .92)";
-		context.fillRect(68, 928, 1064, 218);
-		context.fillStyle = "#f2cf65";
-		context.font = "700 42px 'Segoe UI', Tahoma, Arial, sans-serif";
-		context.fillText(`CHẶNG ${String(order).padStart(2, "0")}`.normalize("NFC"), 112, 1000);
-		context.fillStyle = "#fff7df";
-		context.font = "700 76px 'Segoe UI', Tahoma, Arial, sans-serif";
-		context.fillText(period.normalize("NFC"), 112, 1084);
-		context.fillStyle = "#f2cf65";
+
+		context.textAlign = "left";
+		context.fillStyle = "#a02a27";
+		context.font = "800 27px 'Times New Roman', Georgia, serif";
+		context.fillText(`CHẶNG ${String(exhibit.order).padStart(2, "0")}`.normalize("NFC"), 796, 308);
+		context.fillStyle = "#211c17";
+		context.font = "700 47px 'Times New Roman', Georgia, serif";
+		const titleLines = this._wrapCanvasText(context, exhibit.title, 338, 8);
+		titleLines.forEach((line, lineIndex) => context.fillText(line, 796, 370 + lineIndex * 52));
+
+		const metaY = Math.max(720, 398 + titleLines.length * 52);
+		context.strokeStyle = "#9c2925";
+		context.lineWidth = 4;
 		context.beginPath();
-		context.arc(1010, 1038, 62, 0, Math.PI * 2);
-		context.fill();
-		context.fillStyle = "#5b1717";
-		context.font = "700 52px 'Segoe UI', Tahoma, Arial, sans-serif";
-		context.textAlign = "center";
-		context.fillText(String(order), 1010, 1056);
+		context.moveTo(796, metaY);
+		context.lineTo(1138, metaY);
+		context.stroke();
+		context.fillStyle = "#302820";
+		context.font = "700 26px 'Times New Roman', Georgia, serif";
+		this._wrapCanvasText(context, exhibit.date, 338, 2).forEach((line, lineIndex) => context.fillText(line, 796, metaY + 42 + lineIndex * 30));
+		context.font = "24px 'Times New Roman', Georgia, serif";
+		this._wrapCanvasText(context, exhibit.location, 338, 3).forEach((line, lineIndex) => context.fillText(line, 796, metaY + 112 + lineIndex * 29));
+
+		context.strokeStyle = "#2b251d";
+		context.lineWidth = 3;
+		context.beginPath();
+		context.moveTo(54, 910);
+		context.lineTo(1146, 910);
+		context.stroke();
+		context.fillStyle = "#2c251d";
+		context.font = "italic 28px 'Times New Roman', Georgia, serif";
+		this._wrapCanvasText(context, exhibit.imageCaption, 1080, 3).forEach((line, lineIndex) => context.fillText(line, 58, 954 + lineIndex * 34));
+		context.fillStyle = "#982622";
+		context.fillRect(44, 1092, 1112, 64);
+		context.fillStyle = "#f4edd8";
+		context.font = "700 24px 'Times New Roman', Georgia, serif";
+		context.fillText("TƯ LIỆU LỊCH SỬ SỐ · 1996—2006".normalize("NFC"), 66, 1134);
+		context.textAlign = "right";
+		context.font = "700 22px Tahoma, Arial, sans-serif";
+		context.fillText(exhibit.imageCredit.normalize("NFC"), 1132, 1133);
 
 		const texture = new CanvasTexture(canvas);
 		texture.needsUpdate = true;

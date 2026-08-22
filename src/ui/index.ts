@@ -252,7 +252,14 @@ export default class UI {
 			});
 		}
 
-		this.doms.boards_content.scrollTo({top: 0, left: 0, behavior: "auto"});
+		// The dialog is reused between exhibits. Reset both immediately and after
+		// layout so a previous reading position cannot crop the next headline.
+		this.doms.boards_content.scrollTop = 0;
+		this.doms.boards_content.scrollLeft = 0;
+		requestAnimationFrame(() => {
+			this.doms.boards_content.scrollTop = 0;
+			this.doms.boards_content.scrollLeft = 0;
+		});
 		this.core.control_manage.disabled();
 		this.doms.boards_container.querySelector<HTMLElement>(".boards-info-close")?.focus();
 	}
