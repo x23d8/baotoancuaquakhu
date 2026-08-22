@@ -3,6 +3,7 @@
  */
 export const COLLISION_SCENE_URL = new URL("./assets/models/scene_collision.glb", import.meta.url).href;
 export const STATIC_SCENE_URL = new URL("./assets/models/scene_desk_obj.glb", import.meta.url).href;
+export const BAMBOO_FURNITURE_URL = new URL("../3d_models/vietnamese_bamboo_furniture.glb", import.meta.url).href;
 
 export type SourceLink = {
 	label: string;

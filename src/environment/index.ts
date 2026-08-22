@@ -1,7 +1,8 @@
 import Core from "../core";
 import Loader from "../loader";
-import {COLLISION_SCENE_URL, EXHIBITS, EXHIBITS_BY_SLOT, ON_LOAD_MODEL_FINISH, ON_LOAD_PROGRESS, STATIC_SCENE_URL} from "../Constants";
+import {BAMBOO_FURNITURE_URL, COLLISION_SCENE_URL, EXHIBITS, EXHIBITS_BY_SLOT, ON_LOAD_MODEL_FINISH, ON_LOAD_PROGRESS, STATIC_SCENE_URL} from "../Constants";
 import {
+	Box3,
 	CanvasTexture,
 	Group,
 	Material,
@@ -9,7 +10,8 @@ import {
 	MeshBasicMaterial,
 	Object3D,
 	PlaneGeometry,
-	Texture
+	Texture,
+	Vector3
 } from "three";
 import {isLight, isMesh} from "../utils/typeAssert";
 import {MeshBVH, MeshBVHOptions, StaticGeometryGenerator} from "three-mesh-bvh";
@@ -318,15 +320,62 @@ export default class Environment {
 		});
 	}
 
+	private async _replaceSofaWithBambooFurniture(): Promise<void> {
+		if (!this.collision_scene) return;
+
+		const sofa = this.collision_scene.getObjectByName("sofa");
+		if (!sofa) return;
+
+		try {
+			const sofa_bounds = new Box3().setFromObject(sofa);
+			const sofa_center = sofa_bounds.getCenter(new Vector3());
+			const sofa_size = sofa_bounds.getSize(new Vector3());
+			const {scene: furniture} = await this.loader.gltf_loader.loadAsync(BAMBOO_FURNITURE_URL);
+
+			furniture.name = "vietnamese_bamboo_furniture";
+			sofa.getWorldQuaternion(furniture.quaternion);
+			furniture.rotateY(Math.PI / 2);
+			furniture.updateMatrixWorld(true);
+
+			const source_size = new Box3().setFromObject(furniture).getSize(new Vector3());
+			const target_length = Math.max(sofa_size.x, sofa_size.z);
+			const source_length = Math.max(source_size.x, source_size.z);
+			const furniture_scale = target_length / source_length;
+			furniture.scale.setScalar(furniture_scale);
+
+			furniture.traverse(item => {
+				if (!isMesh(item)) return;
+				item.castShadow = true;
+				item.receiveShadow = true;
+			});
+
+			this.collision_scene.add(furniture);
+			furniture.updateMatrixWorld(true);
+
+			const furniture_bounds = new Box3().setFromObject(furniture);
+			const furniture_center = furniture_bounds.getCenter(new Vector3());
+			furniture.position.x += sofa_center.x - furniture_center.x;
+			furniture.position.y += sofa_bounds.min.y - furniture_bounds.min.y;
+			furniture.position.z += sofa_center.z - furniture_center.z;
+			furniture.userData.replaces = sofa.name;
+			furniture.updateMatrixWorld(true);
+
+			sofa.parent?.remove(sofa);
+		} catch (error) {
+			console.warn("Unable to replace the gallery sofa with bamboo furniture.", error);
+		}
+	}
+
 	/*
 	* Load the scene with collision detection
 	* */
 	private _loadSceneAndCollisionDetection(): Promise<void> {
 		return new Promise(resolve => {
-			this.loader.gltf_loader.load(COLLISION_SCENE_URL, (gltf) => {
+			this.loader.gltf_loader.load(COLLISION_SCENE_URL, async (gltf) => {
 				this.collision_scene = gltf.scene;
 
 				this.collision_scene.updateMatrixWorld(true);
+				await this._replaceSofaWithBambooFurniture();
 
 				this.collision_scene.traverse(item => {
 					if (item.name === "home001" || item.name === "PointLight") {

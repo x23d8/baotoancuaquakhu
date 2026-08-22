@@ -1,3 +1,11 @@
+@font-face {
+	font-family: "Hardware Rough";
+	src: url("../../iCielBCDDCHardwareRough-Compressed.ttf") format("truetype");
+	font-display: swap;
+	font-style: normal;
+	font-weight: 400;
+}
+
 :root {
 	--museum-red: #65191c;
 	--museum-red-dark: #310b0d;
@@ -8,8 +16,20 @@
 	--ink: #241a13;
 	--smoke: rgba(23, 12, 8, .82);
 	--font-vietnamese: Tahoma, Verdana, sans-serif;
-	--font-display: "Trebuchet MS", Tahoma, sans-serif;
+	--font-display: "Hardware Rough", Impact, "Arial Narrow", sans-serif;
 	--font-document: Tahoma, Verdana, sans-serif;
+	--sign-teal: #315e53;
+	--sign-teal-dark: #173d37;
+	--sign-orange: #ed4b1f;
+	--sign-orange-dark: #c93418;
+	--sign-metal: #cadbd0;
+	--sign-cream: #fff8e8;
+	--entry-title-gap: 24px;
+	--entry-lead-width: 730px;
+	--entry-lead-gap: 27px;
+	--entry-lead-align: center;
+	--entry-lead-offset-x: 50px;
+
 }
 
 .display-none { display: none !important; }
@@ -87,9 +107,9 @@ input,
 
 .loading-complete {
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
 	overflow: auto;
-	padding: clamp(28px, 6vw, 88px);
+	padding: clamp(24px, 4vh, 44px) clamp(24px, 5vw, 72px);
 	background: transparent;
 }
 .loading-complete::before {
@@ -98,30 +118,59 @@ input,
 .loading-complete:not(.display-none) ~ .museum-hud { visibility: hidden; }
 
 .entry-card {
+	position: relative;
+	z-index: 1;
 	display: grid;
 	grid-template-rows: auto 1fr auto;
-	width: min(720px, 53vw);
-	min-height: min(720px, calc(100vh - clamp(56px, 12vw, 176px)));
-	padding: clamp(30px, 4vw, 58px);
-	color: #fff8e9;
-	background: linear-gradient(135deg, rgba(24, 6, 6, .5), rgba(24, 6, 6, .27));
-	box-shadow: 0 28px 80px rgba(0, 0, 0, .18);
-	backdrop-filter: blur(16px) saturate(.78);
-	-webkit-backdrop-filter: blur(16px) saturate(.78);
+	width: min(980px, calc(100vw - 96px));
+	min-height: min(590px, calc(100vh - clamp(48px, 10vw, 128px)));
+	padding: clamp(36px, 4vw, 76px) clamp(58px, 7vw, 88px);
+	overflow: hidden;
+	color: var(--sign-cream);
+	background:
+		repeating-linear-gradient(168deg, transparent 0 24px, rgba(99, 26, 12, .08) 25px 26px, transparent 27px 51px),
+		radial-gradient(circle at 72% 28%, rgba(255, 203, 117, .17), transparent 32%),
+		linear-gradient(145deg, var(--sign-orange), #e3421c 56%, var(--sign-orange-dark));
+	border: clamp(12px, 1.5vw, 18px) solid var(--sign-metal);
+	border-radius: clamp(28px, 3.5vw, 44px);
+	outline: 3px solid rgba(15, 56, 49, .45);
+	box-shadow:
+		0 17px 0 rgba(16, 51, 45, .44),
+		0 34px 66px rgba(3, 22, 19, .48),
+		inset 0 0 0 2px rgba(255, 246, 218, .3);
 }
-.entry-masthead p { margin: 0 0 7px; color: #fff8e9; font: 700 .92rem/1.2 var(--font-display); letter-spacing: .035em; text-transform: uppercase; }
-.entry-masthead span { color: rgba(255, 242, 213, .7); font: .76rem/1.4 var(--font-vietnamese); }
-.entry-copy { align-self: center; padding: clamp(52px, 8vh, 96px) 0 38px; }
-.entry-kicker { margin: 0 0 16px; color: #f4d65f; font: 700 .78rem/1.3 var(--font-vietnamese); letter-spacing: .08em; }
-.entry-card h1 { margin: 0; color: #fff8e9; font: 700 clamp(3.6rem, 6.3vw, 6.2rem)/.91 var(--font-display); letter-spacing: -.045em; }
-.entry-card h1 span, .entry-card h1 strong { display: block; }
-.entry-card h1 strong { color: #f4d65f; font-weight: 700; }
-.entry-lead { width: min(560px, 100%); margin: 28px 0 0; color: rgba(255, 248, 233, .82); font: clamp(.95rem, 1.25vw, 1.08rem)/1.7 var(--font-vietnamese); }
-.entry-period { margin: 25px 0 0; color: #f4d65f; font: 700 .78rem/1.4 var(--font-vietnamese); }
-.entry-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.entry-archive { margin: 0; color: rgba(255, 242, 213, .58); font: .72rem/1.4 var(--font-vietnamese); }
-.start { min-height: 48px; border: 0; border-radius: 3px; padding: 0 22px; color: #501310; background: #f4d65f; cursor: pointer; font: 700 .82rem/1 var(--font-vietnamese); transition: background .18s ease, transform .18s ease; }
-.start:hover { background: #fff0a1; transform: translateY(-2px); }
+.entry-card::before,
+.entry-card::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	width: clamp(34px, 4vw, 48px);
+	aspect-ratio: 1;
+	transform: translateY(-50%);
+	border: 5px solid rgba(202, 219, 208, .96);
+	border-radius: 50%;
+	background:
+		linear-gradient(rgba(5, 35, 31, .46), rgba(255, 255, 255, .14) 46%, rgba(4, 31, 28, .7) 49% 56%, rgba(92, 130, 117, .62)),
+		var(--sign-teal);
+	box-shadow: inset 0 0 0 2px rgba(16, 52, 46, .35), 0 3px 8px rgba(4, 29, 25, .4);
+}
+.entry-card::before { left: clamp(-42px, -3.3vw, -28px); }
+.entry-card::after { right: clamp(-42px, -3.3vw, -28px); }
+.entry-masthead { padding-bottom: 15px; border-bottom: 2px solid rgba(255, 248, 232, .62); }
+.entry-masthead p { margin: 0 0 5px; color: var(--sign-cream); font: 400 clamp(1.15rem, 2.1vw, 1.65rem)/1 var(--font-display); letter-spacing: .055em; text-transform: uppercase; }
+.entry-masthead span { color: rgba(255, 248, 232, .8); font: 700 .76rem/1.4 var(--font-vietnamese); letter-spacing: .08em; }
+.entry-copy { align-self: center; padding: clamp(26px, 5vh, 48px) 0 30px; }
+.entry-kicker { margin: 0 0 clamp(20px, 3vw, 42px); color: #ffd85a; font: 400 clamp(1rem, 1.7vw, 1.3rem)/1.15 var(--font-display); letter-spacing: .055em; text-align: center; text-transform: uppercase; }
+.entry-card h1 { display: flex; flex-direction: column; align-items: center; row-gap: var(--entry-title-gap); margin: 0; color: var(--sign-cream); font: 400 clamp(4.5rem, 9.4vw, 8.6rem)/.9 var(--font-display); letter-spacing: .01em; text-align: center; text-transform: uppercase; text-shadow: 3px 3px 0 rgba(108, 27, 13, .25); }
+.entry-card h1 span, .entry-card h1 strong { display: block; width: max-content; max-width: 100%; text-align: center; }
+.entry-card h1 strong { color: #ffd85a; font-weight: 400; }
+.entry-lead { width: min(730px, 100%); margin: 28px 0 0; color: rgba(255, 248, 232, .9); font: 700 clamp(.9rem, 1.22vw, 1.03rem)/1.62 var(--font-vietnamese);   transform: translateX(var(--entry-lead-offset-x)); }
+.entry-period { margin: 19px 0 0; color: #ffd85a; font: 400 clamp(1rem, 1.6vw, 1.25rem)/1.15 var(--font-display); letter-spacing: .045em; text-align: center; text-transform: uppercase; }
+.entry-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 16px; border-top: 2px solid rgba(255, 248, 232, .62); }
+.entry-archive { margin: 0; color: rgba(255, 248, 232, .78); font: 700 .7rem/1.4 var(--font-vietnamese); letter-spacing: .055em; text-transform: uppercase; }
+.start { min-height: 52px; border: 3px solid var(--sign-teal-dark); border-radius: 4px; padding: 0 24px; color: #173d37; background: var(--sign-metal); cursor: pointer; font: 400 1.08rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; box-shadow: 5px 5px 0 rgba(75, 23, 13, .34); transition: color .16s ease, background .16s ease, transform .16s ease, box-shadow .16s ease; }
+.start:hover { color: var(--sign-cream); background: var(--sign-teal); transform: translate(-2px, -2px); box-shadow: 7px 7px 0 rgba(75, 23, 13, .34); }
+.start:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(75, 23, 13, .34); }
 
 .museum-hud {
 	position: fixed;
@@ -344,18 +393,21 @@ kbd { display: inline-grid; place-items: center; min-width: 28px; height: 28px; 
 #joystick { display: none; position: absolute; z-index: 30; bottom: 18%; width: 100px; height: 100px; border: 1px solid rgba(214, 173, 79, .65); border-radius: 50%; user-select: none; }
 
 @media (max-height: 780px) and (min-width: 561px) {
-	.loading-complete { padding-top: 12px; padding-bottom: 12px; }
-	.entry-card { min-height: calc(100vh - 24px); padding: 24px 34px; }
-	.entry-copy { padding: 28px 0 22px; }
-	.entry-card h1 { font-size: clamp(3rem, 10vh, 4.8rem); }
-	.entry-lead { margin-top: 18px; font-size: .92rem; }
-	.entry-period { margin-top: 18px; }
+	.loading-complete { padding-top: 20px; padding-bottom: 20px; }
+	.entry-card { min-height: calc(100vh - 40px); padding: 26px clamp(54px, 7vw, 72px); }
+	.entry-copy { padding: 18px 0 16px; }
+	.entry-card h1 { font-size: clamp(3.8rem, 12vh, 6.2rem); }
+	.entry-lead { margin-top: 16px; font-size: .84rem; line-height: 1.48; }
+	.entry-period { margin-top: 12px; }
+	.entry-footer { padding-top: 12px; }
+	.start { min-height: 44px; }
 }
 
 @media (max-width: 900px) {
 	.loading-media video { object-position: 62% center; }
-	.loading-complete { align-items: stretch; padding: 24px; }
-	.entry-card { width: min(650px, 72vw); }
+	.loading-complete { padding: 26px; }
+	.entry-card { width: min(760px, calc(100vw - 52px)); padding-right: clamp(48px, 8vw, 72px); padding-left: clamp(48px, 8vw, 72px); }
+	.entry-card h1 { font-size: clamp(4rem, 12vw, 6.5rem); }
 	.museum-brand small, .audio-toggle { display: none; }
 	.boards-info, .sources-panel, .operating-intro { padding: 10px; }
 	.boards-container { width: 98vw; height: 94vh; padding: 16px 10px; }
@@ -368,15 +420,22 @@ kbd { display: inline-grid; place-items: center; min-width: 28px; height: 28px; 
 @media (max-width: 560px) {
 	.loading-media video { object-position: 66% center; }
 	.loading-media::after { background: linear-gradient(0deg, rgba(13, 4, 4, .7), rgba(13, 4, 4, .2)); }
-	.loading-complete { justify-content: flex-end; padding: 12px; }
-	.entry-card { width: 100%; min-height: min(610px, calc(100vh - 24px)); padding: 26px 22px; background: rgba(27, 8, 8, .45); box-shadow: none; backdrop-filter: blur(12px) saturate(.8); }
-	.entry-copy { padding: 34px 0 28px; }
-	.entry-card h1 { font-size: clamp(3rem, 15vw, 4.35rem); }
-	.entry-lead { width: 100%; margin-top: 20px; font-size: .86rem; line-height: 1.6; }
-	.entry-period { margin-top: 20px; }
-	.entry-footer { align-items: flex-end; }
-	.entry-archive { display: none; }
-	.start { margin-left: auto; }
+	.loading-complete { justify-content: center; padding: 14px; }
+	.entry-card { width: 100%; min-height: min(640px, calc(100vh - 28px)); padding: 34px 32px 28px; border-width: 9px; border-radius: 25px; }
+	.entry-card::before, .entry-card::after { width: 29px; border-width: 4px; }
+	.entry-card::before { left: -24px; }
+	.entry-card::after { right: -24px; }
+	.entry-masthead { padding-bottom: 11px; }
+	.entry-masthead p { font-size: 1.05rem; }
+	.entry-masthead span { font-size: .66rem; }
+	.entry-copy { padding: 24px 0 20px; }
+	.entry-kicker { margin-bottom: 24px; font-size: .92rem; text-align: left; }
+	.entry-card h1 { font-size: clamp(3.25rem, 16vw, 5.1rem); line-height: .9; }
+	.entry-lead { width: 100%; margin-top: 20px; font-size: .8rem; line-height: 1.52; }
+	.entry-period { margin-top: 16px; font-size: .95rem; text-align: left; }
+	.entry-footer { align-items: stretch; flex-direction: column; gap: 13px; padding-top: 14px; }
+	.entry-archive { font-size: .62rem; }
+	.start { width: 100%; min-height: 48px; }
 	.museum-hud { top: 8px; left: 8px; right: 8px; }
 	.brand-flag { width: 39px; }
 	.museum-brand b { font-size: .65rem; }
